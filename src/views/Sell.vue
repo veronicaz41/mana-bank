@@ -1,14 +1,22 @@
 <template>
-  <NFTSelector :nfts="nfts" />
+  <div>
+    <NFTSelector :nfts="nfts" />
+  </div>
 </template>
 
 <script>
 import NFTSelector from "@/components/NFTSelector.vue";
+import { mapState } from 'vuex';
 
 export default {
   name: "Sell",
   components: {
     NFTSelector
+  },
+
+  computed: {
+    ...mapState(['selectedToken']),
+
   },
 
   data() {
