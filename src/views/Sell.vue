@@ -1,12 +1,12 @@
 <template>
-  <NFTSelector :nfts="nfts"/>
+  <NFTSelector :nfts="nfts" />
 </template>
 
 <script>
-import NFTSelector from '@/components/NFTSelector.vue';
+import NFTSelector from "@/components/NFTSelector.vue";
 
 export default {
-  name: 'Sell',
+  name: "Sell",
   components: {
     NFTSelector
   },
@@ -23,11 +23,11 @@ export default {
           imageUrl: "https://www.cheezewizards.com/static/img/logo/mark.svg"
         },
         {
-          tokenId: "0x23e234",
+          tokenId: "0x23d324w",
           imageUrl: "https://www.cheezewizards.com/static/img/logo/mark.svg"
         }
       ]
     };
-  },
-}
+  }
+};
 </script>
