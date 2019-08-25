@@ -22,16 +22,13 @@ export default {
     return {
       nfts: [
         {
-          tokenId: "0x234123",
-          imageUrl: "https://www.cheezewizards.com/static/img/logo/mark.svg"
+          tokenId: 2445,
         },
         {
-          tokenId: "0x23e234",
-          imageUrl: "https://www.cheezewizards.com/static/img/logo/mark.svg"
+          tokenId: 2446,
         },
         {
-          tokenId: "0x23d324w",
-          imageUrl: "https://www.cheezewizards.com/static/img/logo/mark.svg"
+          tokenId: 2444,
         }
       ]
     };
