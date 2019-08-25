@@ -13,7 +13,20 @@ export default {
 
   data() {
     return {
-      nfts: []
+      nfts: [
+        {
+          tokenId: "0x234123",
+          imageUrl: "https://www.cheezewizards.com/static/img/logo/mark.svg"
+        },
+        {
+          tokenId: "0x23e234",
+          imageUrl: "https://www.cheezewizards.com/static/img/logo/mark.svg"
+        },
+        {
+          tokenId: "0x23e234",
+          imageUrl: "https://www.cheezewizards.com/static/img/logo/mark.svg"
+        }
+      ]
     };
   },
 }
