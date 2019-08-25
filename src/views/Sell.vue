@@ -6,7 +6,7 @@
 
 <script>
 import NFTSelector from "@/components/NFTSelector.vue";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   name: "Sell",
@@ -15,8 +15,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['selectedToken']),
-
+    ...mapState(["selectedToken"])
   },
 
   data() {

@@ -10,22 +10,21 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 
 export default {
-  name: 'NFT',
+  name: "NFT",
 
   // NOTE: {'tokenId', 'imageUrl'}
-  props: ['nft'],
+  props: ["nft"],
 
-  methods:  {
-    ...mapActions(['setSelectedToken'])
-
+  methods: {
+    ...mapActions(["setSelectedToken"])
   },
 
   data() {
     return {
     };
-  },
-}
+  }
+};
 </script>
