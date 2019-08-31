@@ -8,20 +8,17 @@ export default new Router({
     {
       path: "/",
       name: "GetMana",
-      component: () =>
-        import("./views/GetMana.vue")
+      component: () => import("./views/GetMana.vue")
     },
     {
       path: "/get_collectibles",
       name: "GetCollectibles",
-      component: () =>
-        import("./views/GetCollectibles.vue")
+      component: () => import("./views/GetCollectibles.vue")
     },
     {
       path: "/trade",
       name: "Trade",
-      component: () =>
-        import("./views/Trade.vue")
+      component: () => import("./views/Trade.vue")
     }
   ]
 });
