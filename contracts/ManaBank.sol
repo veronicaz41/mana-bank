@@ -102,7 +102,7 @@ contract ManaBank is ERC20, ReentrancyGuard{
         _mint(msg.sender, (_tokenAddresses.length).mul(manaPerNFT));
     }
 
-    function burnMana(uint256 manaToBurn) external payable nonReentrant {
+    function burnMana(uint256 manaToBurn) external nonReentrant {
         require(manaToBurn >= manaPerNFT, "ManaBank: Must burn enough mana for at least one token");
 
         uint256 numTokensToSend = manaToBurn.div(manaPerNFT);
