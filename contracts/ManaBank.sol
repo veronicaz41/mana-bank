@@ -28,6 +28,9 @@ contract ManaBank is ERC20, ReentrancyGuard{
     mapping(uint256 => DepositedToken) public idxToDepositedToken;
     uint256 public lastIdx = 0;
 
+    // NOTE: Redundant and for a 'production' app, this caching should happen in the client
+    mapping(address => uint256) public tokenAddressToCount;
+
     // NOTE: Gets a random index *less than* than last index that has an element at it
     function _getRandomIdx() internal view returns (uint256) {
         if (lastIdx < 2) {
@@ -55,6 +58,7 @@ contract ManaBank is ERC20, ReentrancyGuard{
             _tokenAddress,
             _tokenId
         );
+        tokenAddressToCount[_tokenAddress] += 1;
 
         // swap with random item in mapping if there are two or more elements
         if (lastIdx > 1) {
@@ -68,6 +72,7 @@ contract ManaBank is ERC20, ReentrancyGuard{
 
         DepositedToken memory toReturn = idxToDepositedToken[lastIdx];
         lastIdx -= 1;
+        tokenAddressToCount[_tokenAddress] -= 1;
 
         return toReturn;
     }
