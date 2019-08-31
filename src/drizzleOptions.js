@@ -1,4 +1,4 @@
-import Example from '../build/contracts/Example.json'
+import Example from '../build/contracts/ManaBank.json'
 
 const options = {
   web3: {
@@ -10,7 +10,7 @@ const options = {
   },
 
   // The contracts to monitor
-  contracts: [Example],
+  contracts: [ManaBank],
   events: {
   },
   polls: {
