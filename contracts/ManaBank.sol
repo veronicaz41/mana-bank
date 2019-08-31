@@ -72,7 +72,7 @@ contract ManaBank is ERC20, ReentrancyGuard{
 
         DepositedToken memory toReturn = idxToDepositedToken[lastIdx];
         lastIdx -= 1;
-        tokenAddressToCount[_tokenAddress] -= 1;
+        tokenAddressToCount[toReturn.tokenAddress] -= 1;
 
         return toReturn;
     }
