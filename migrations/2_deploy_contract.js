@@ -1,5 +1,5 @@
-const Example = artifacts.require("Example");
+const ManaBank = artifacts.require("ManaBank");
 
 module.exports = function (deployer) {
-  deployer.deploy(Example);
+  deployer.deploy(ManaBank);
 };

@@ -28,6 +28,7 @@ contract ManaBank is ERC20, ReentrancyGuard{
     mapping(uint256 => DepositedToken) public idxToDepositedToken;
     uint256 public lastIdx = 0;
 
+    // NOTE: Gets a random index *less than* than last index that has an element at it
     function _getRandomIdx() internal view returns (uint256) {
         if (lastIdx < 2) {
             // NOTE: Should never get here
@@ -72,8 +73,10 @@ contract ManaBank is ERC20, ReentrancyGuard{
     }
 
     function getMana(address[] calldata _tokenAddresses, uint256[] calldata _tokenIds) external nonReentrant {
-        require(_tokenAddresses.length == _tokenIds.length,
-                "ManaBank: Must specify an equal number of tokens and tokenIds to deposit");
+        require(
+            _tokenAddresses.length == _tokenIds.length,
+            "ManaBank: Must specify an equal number of tokens and tokenIds to deposit"
+        );
         require(_tokenAddresses.length > 0, "ManaBank: Must deposit a nonzero number of tokens");
 
         for(uint i = 0; i < _tokenAddresses.length; i++){
@@ -82,7 +85,7 @@ contract ManaBank is ERC20, ReentrancyGuard{
 
             IERC721 tokenContract = IERC721(tokenAddress); // NOTE: If the gas cost of this is prohibitive,
                                                            // we could constrain the 721s to Kitties/Wizards
-                                                           // explicitly check assembly later
+                                                           // explicitly; check assembly later
             require(
                 tokenContract.ownerOf(tokenId) == msg.sender,
                 "ManaBank: You must own all tokens being deposited for mana"
@@ -112,7 +115,7 @@ contract ManaBank is ERC20, ReentrancyGuard{
 
         // Burn only the minimum amount of mana required to withdraw the specified tokens
         uint256 actualManaToBurn = numTokensToSend.mul(manaPerNFT);
-        require(balanceOf(msg.sender) >= actualManaToBurn);
+        require(balanceOf(msg.sender) >= actualManaToBurn, "ManaBank: You must own enough mana to burn");
         _burn(msg.sender, actualManaToBurn);
 
         // Withdraw all tokens
