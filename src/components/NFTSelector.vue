@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NFT v-for="nft of this.nfts" v-bind:key="nft.tokenId" :nft="nft" />
+    <NFT v-for="nft of this.nfts" v-bind:key="nft.id" :nft="nft" />
   </div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
     NFT
   },
 
-  // NOTE: list of {'tokenId', 'imageUrl'}
+  // NOTE: list of {'id', 'imageUrl'}
   props: ["nfts"],
 
   data() {

@@ -3,15 +3,16 @@
     <b-container>
       <b-row>
         <b-col cols="9">
-          <NFTSelector :nfts="nfts" />
+          <NFTSelector :nfts="wizards" />
+          <NFTSelector :nfts="kitties" />
         </b-col>
 
         <b-col cols="3">Get Mana button + description</b-col>
       </b-row>
     </b-container>
-    <div>{{ this.wizards.config }}</div>
+    <div>{{ this.wizards }}</div>
     <br />
-    <div>{{ this.kitties.config }}</div>
+    <div>{{ this.kitties }}</div>
   </div>
 </template>
 
@@ -32,18 +33,6 @@ export default {
 
   data() {
     return {
-      // TODO: include tokenType
-      nfts: [
-        {
-          tokenId: 2445
-        },
-        {
-          tokenId: 2446
-        },
-        {
-          tokenId: 2444
-        }
-      ],
       wizards: null,
       kitties: null
     };
@@ -62,7 +51,12 @@ export default {
             "x-email": process.env.VUE_APP_CHEEZE_VERSE_EMAIL
           }
         })
-        .then(response => (this.wizards = response));
+        .then(response => {
+            this.wizards = response.data.wizards || []
+        })
+        .catch(error => {
+          console.log(error)
+        });
     },
 
     getKitties(owner) {
@@ -75,12 +69,19 @@ export default {
             "x-api-token": process.env.VUE_APP_KITTY_VERSE_API_TOKEN
           }
         })
-        .then(response => (this.kitties = response));
+        .then(response => {
+          // response.data { "limit": 12, "offset": 0, "kitties": [], "total": 0 }
+          // TODO: paging
+          this.kitties = response.data.kitties || []
+        })
+        .catch(error => {
+          console.log(error)
+        });
     }
   },
 
   mounted() {
-    const owner = "";
+    const owner = "0xF0128825b0c518858971d8521498769148137936";
     this.getWizards(owner);
     this.getKitties(owner);
   }
