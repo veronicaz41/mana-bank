@@ -10,8 +10,14 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import drizzleVuePlugin from "@drizzle/vue-plugin";
 import drizzleOptions from "./drizzleOptions";
 
+import VueApexCharts from "vue-apexcharts";
+
 Vue.use(BootstrapVue);
+Vue.use(VueApexCharts);
 Vue.use(drizzleVuePlugin, { store, drizzleOptions });
+
+Vue.component("apexchart", VueApexCharts);
+
 Vue.config.productionTip = false;
 
 new Vue({
