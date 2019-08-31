@@ -22,3 +22,6 @@ yarn-error.log*
 
 .secret
 build/
+
+# For truffle-watch
+watch-config.json
