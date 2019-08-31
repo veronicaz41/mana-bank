@@ -112,6 +112,7 @@ contract ManaBank is ERC20, ReentrancyGuard{
 
         // Burn only the minimum amount of mana required to withdraw the specified tokens
         uint256 actualManaToBurn = numTokensToSend.mul(manaPerNFT);
+        require(balanceOf(msg.sender) >= actualManaToBurn);
         _burn(msg.sender, actualManaToBurn);
 
         // Withdraw all tokens
