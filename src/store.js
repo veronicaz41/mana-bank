@@ -14,7 +14,7 @@ export default new Vuex.Store({
   },
   actions: {
     setSelectedToken: ({ commit }, tokenId) => {
-      commit('UPDATE_SELECTED_TOKEN', tokenId);
+      commit("UPDATE_SELECTED_TOKEN", tokenId);
     }
   }
 });
