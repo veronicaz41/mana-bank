@@ -1,7 +1,6 @@
 <template>
   <div>
     <b-container>
-
       <b-row>
         <b-col cols="9">
           <NFTSelector :nfts="nfts" />
@@ -11,7 +10,6 @@
           Get Mana button + description
         </b-col>
       </b-row>
-
     </b-container>
   </div>
 </template>
@@ -35,13 +33,13 @@ export default {
       // TODO: include tokenType
       nfts: [
         {
-          tokenId: 2445,
+          tokenId: 2445
         },
         {
-          tokenId: 2446,
+          tokenId: 2446
         },
         {
-          tokenId: 2444,
+          tokenId: 2444
         }
       ]
     };
