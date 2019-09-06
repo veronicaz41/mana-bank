@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import VueSelectImage from "vue-select-image";
 import "vue-select-image/dist/vue-select-image.css";
 
@@ -25,8 +26,10 @@ export default {
   props: ["nfts"],
 
   methods: {
+    ...mapActions(["setSelectedNFTs"]),
+
     onSelectNFTs(nfts) {
-      console.log(nfts);
+      this.setSelectedNFTs(nfts);
     }
   }
 };

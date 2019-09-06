@@ -6,7 +6,11 @@
           <NFTSelector :nfts="wizards" />
           <NFTSelector :nfts="kitties" />
         </b-col>
-        <b-col cols="3">Get Mana button + description</b-col>
+        <b-col cols="3">
+          <div>Deposit {{this.selectedNFTs.length}} Wizards/Kitties</div>
+          <b-button>Get MANA</b-button>
+          <div>MANA is bla bla bla, a description of what MANA is. And then a link to about page.</div>
+        </b-col>
       </b-row>
     </b-container>
   </div>
@@ -24,7 +28,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["selectedToken"])
+    ...mapState(["selectedNFTs"])
   },
 
   data() {
