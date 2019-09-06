@@ -54,7 +54,10 @@ export default {
           .tokenAddressToCount;
 
         // TODO: Actually figure out why this doesn't work!
-        if (this.kittyCountKey in tokenAddressToCountMap && this.wizardCountKey in tokenAddressToCountMap) {
+        if (
+          this.kittyCountKey in tokenAddressToCountMap &&
+          this.wizardCountKey in tokenAddressToCountMap
+        ) {
           const kittyCount = parseInt(
             tokenAddressToCountMap[this.kittyCountKey].value
           );
