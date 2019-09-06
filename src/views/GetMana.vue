@@ -32,32 +32,32 @@ export default {
       wizards: [
         {
           id: "2445",
-          imageUrl:
+          src:
             "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2445.svg"
         },
         {
           id: "2446",
-          imageUrl:
+          src:
             "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2446.svg"
         },
         {
           id: "2447",
-          imageUrl:
+          src:
             "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2447.svg"
         },
         {
           id: "2448",
-          imageUrl:
+          src:
             "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2448.svg"
         },
         {
           id: "2449",
-          imageUrl:
+          src:
             "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2449.svg"
         },
         {
           id: "2450",
-          imageUrl:
+          src:
             "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2450.svg"
         }
       ],
