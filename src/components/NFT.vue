@@ -1,7 +1,7 @@
 <template>
   <div @click="setSelectedToken(nft.tokenId)">
     <div>
-      <img v-bind:src="this.cwImageUrl" alt="nft image">
+      <img v-bind:src="this.cwImageUrl" alt="nft image" />
     </div>
     <div>
       {{ this.nft.tokenId }}
@@ -29,8 +29,7 @@ export default {
   },
 
   data() {
-    return {
-    };
+    return {};
   }
 };
 </script>

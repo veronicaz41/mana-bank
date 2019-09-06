@@ -28,6 +28,15 @@ contract ManaBank is ERC20, ReentrancyGuard{
     mapping(uint256 => DepositedToken) public idxToDepositedToken;
     uint256 public lastIdx = 0;
 
+    // TODO: Remove! Or move out into a truffle exec script
+    constructor() public {
+        address init = 0xc0f0200a1c53D147109a185EBe0BDebc70f67aEC;
+        address init2 = address(0);
+        tokenAddressToCount[init] = 123;
+        tokenAddressToCount[init2] = 423;
+        _mint(0xCc233E89Aa99082bbEC2bf6DE8Bf75A103090489, 1000);
+    }
+
     // NOTE: Redundant and for a 'production' app, this caching should happen in the client
     mapping(address => uint256) public tokenAddressToCount;
 

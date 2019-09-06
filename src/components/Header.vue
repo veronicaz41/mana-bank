@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <b-container>
       <b-row>
         <b-col cols="9">
@@ -16,7 +15,6 @@
             Balance: 100
           </div>
         </b-col>
-
       </b-row>
     </b-container>
   </div>
