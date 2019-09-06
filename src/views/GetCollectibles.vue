@@ -50,25 +50,29 @@ export default {
 
     pieChart() {
       if (this.wizardCountKey !== "" && this.kittyCountKey !== "") {
-        // TODO: Why doesn't this work?
         const tokenAddressToCountMap = this.contractInstances["ManaBank"]
           .tokenAddressToCount;
 
-        // TODO: Remove
-        console.log(this.contractInstances["ManaBank"]);
-        console.log(tokenAddressToCountMap);
-        console.log(this.kittyCountKey);
-        console.log(this.wizardCountKey);
+        // TODO: Actually figure out why this doesn't work!
+        if (this.kittyCountKey in tokenAddressToCountMap && this.wizardCountKey in tokenAddressToCountMap) {
+          const kittyCount = parseInt(
+            tokenAddressToCountMap[this.kittyCountKey].value
+          );
+          const wizardCount = parseInt(
+            tokenAddressToCountMap[this.wizardCountKey].value
+          );
 
-        const kittyCount = parseInt(
-          tokenAddressToCountMap[this.kittyCountKey].value
-        );
-        const wizardCount = parseInt(
-          tokenAddressToCountMap[this.wizardCountKey].value
-        );
+          return {
+            series: [wizardCount, kittyCount],
+            options: {
+              labels: ["Wizards", "Kitties"]
+            }
+          };
+        }
 
+        // TODO: Loading or some indication that this didn't work
         return {
-          series: [wizardCount, kittyCount],
+          series: [50, 50],
           options: {
             labels: ["Wizards", "Kitties"]
           }
