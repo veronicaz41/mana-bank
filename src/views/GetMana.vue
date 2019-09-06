@@ -6,13 +6,9 @@
           <NFTSelector :nfts="wizards" />
           <NFTSelector :nfts="kitties" />
         </b-col>
-
         <b-col cols="3">Get Mana button + description</b-col>
       </b-row>
     </b-container>
-    <div>{{ this.wizards }}</div>
-    <br />
-    <div>{{ this.kitties }}</div>
   </div>
 </template>
 
@@ -33,8 +29,39 @@ export default {
 
   data() {
     return {
-      wizards: null,
-      kitties: null
+      wizards: [
+        {
+          id: "2445",
+          imageUrl:
+            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2445.svg"
+        },
+        {
+          id: "2446",
+          imageUrl:
+            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2446.svg"
+        },
+        {
+          id: "2447",
+          imageUrl:
+            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2447.svg"
+        },
+        {
+          id: "2448",
+          imageUrl:
+            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2448.svg"
+        },
+        {
+          id: "2449",
+          imageUrl:
+            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2449.svg"
+        },
+        {
+          id: "2450",
+          imageUrl:
+            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2450.svg"
+        }
+      ],
+      kitties: []
     };
   },
 
@@ -52,10 +79,11 @@ export default {
           }
         })
         .then(response => {
-            this.wizards = response.data.wizards || []
+          this.wizards = response.data.wizards || [];
+          console.log(this.wizards);
         })
         .catch(error => {
-          console.log(error)
+          console.log(error);
         });
     },
 
@@ -72,18 +100,19 @@ export default {
         .then(response => {
           // response.data { "limit": 12, "offset": 0, "kitties": [], "total": 0 }
           // TODO: paging
-          this.kitties = response.data.kitties || []
+          this.kitties = response.data.kitties || [];
+          console.log(this.kitties);
         })
         .catch(error => {
-          console.log(error)
+          console.log(error);
         });
     }
   },
 
-  mounted() {
-    const owner = "0xF0128825b0c518858971d8521498769148137936";
-    this.getWizards(owner);
-    this.getKitties(owner);
+  created() {
+    // const owner = "0xF0128825b0c518858971d8521498769148137936";
+    // this.getWizards(owner);
+    // this.getKitties(owner);
   }
 };
 </script>

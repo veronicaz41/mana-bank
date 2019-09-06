@@ -1,17 +1,10 @@
 <template>
-  <div>
-    <NFT v-for="nft of this.nfts" v-bind:key="nft.id" :nft="nft" />
-  </div>
+  <div></div>
 </template>
 
 <script>
-import NFT from "@/components/NFT.vue";
-
 export default {
   name: "NFTSelector",
-  components: {
-    NFT
-  },
 
   // NOTE: list of {'id', 'imageUrl'}
   props: ["nfts"],
