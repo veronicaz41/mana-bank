@@ -13,7 +13,26 @@
         </b-col>
 
         <b-col cols="3">
-          Vending machine
+          <b-form-input
+            id="mana-select"
+            v-model="selectedMana"
+            :state="validSelectedMana"
+            placeholder="Enter mana to deposit"
+            aria-describedby="input-live-feedback"
+            type="number"
+          >
+          </b-form-input>
+
+          <b-form-invalid-feedback id="mana-select-feedback">
+            Enter an amount of Mana you can afford
+          </b-form-invalid-feedback>
+
+          <b-button
+            :disabled="!validSelectedMana"
+            variant="primary"
+            @click="getCollectibles"
+            >Get Collectibles</b-button
+          >
         </b-col>
       </b-row>
     </b-container>
@@ -30,27 +49,45 @@ const WIZARDS_ADDRESS = "0x0000000000000000000000000000000000000000";
 export default {
   name: "GetCollectibles",
 
-  methods: {
-    loadPieChartData() {
-      const kittyCountKey = this.drizzleInstance.contracts["ManaBank"].methods[
-        "tokenAddressToCount"
-      ].cacheCall(KITTY_ADDRESS);
-      this.kittyCountKey = kittyCountKey;
+  data() {
+    return {
+      addressKey: null,
 
-      const wizardCountKey = this.drizzleInstance.contracts["ManaBank"].methods[
-        "tokenAddressToCount"
-      ].cacheCall(WIZARDS_ADDRESS);
-      this.wizardCountKey = wizardCountKey;
-    }
+      kittyCountKey: null,
+      wizardCountKey: null,
+
+      manaBalanceKey: null,
+
+      selectedMana: null
+    };
   },
 
   computed: {
     ...mapGetters("contracts", ["contractInstances"]),
     ...mapGetters("drizzle", ["isDrizzleInitialized", "drizzleInstance"]),
+    ...mapGetters("accounts", ["activeAccount"]),
+
+    // TODO: unify shitty null checking logic in all drizzle getters
+    validSelectedMana() {
+      if (
+        this.manaBalanceKey != null &&
+        this.manaBalanceKey in this.contractInstances.ManaBank.balanceOf &&
+        this.selectedMana != null
+      ) {
+        const manaBalance = parseInt(
+          this.contractInstances.ManaBank.balanceOf[this.manaBalanceKey].value
+        );
+
+        return this.selectedMana >= 0 && this.selectedMana <= manaBalance;
+      } else {
+        // TODO: Loading!
+        return false;
+      }
+    },
 
     pieChart() {
-      if (this.wizardCountKey !== "" && this.kittyCountKey !== "") {
-        const tokenAddressToCountMap = this.contractInstances["ManaBank"]
+      if (this.wizardCountKey !== null && this.kittyCountKey !== null) {
+        const tokenAddressToCountMap = this.contractInstances.ManaBank
           .tokenAddressToCount;
 
         // TODO: Actually figure out why this doesn't work!
@@ -93,18 +130,37 @@ export default {
       }
     }
   },
+  methods: {
+    loadPieChartData() {
+      const kittyCountKey = this.drizzleInstance.contracts.ManaBank.methods[
+        "tokenAddressToCount"
+      ].cacheCall(KITTY_ADDRESS);
+      this.kittyCountKey = kittyCountKey;
+
+      const wizardCountKey = this.drizzleInstance.contracts.ManaBank.methods[
+        "tokenAddressToCount"
+      ].cacheCall(WIZARDS_ADDRESS);
+      this.wizardCountKey = wizardCountKey;
+    },
+
+    loadManaBalance() {
+      const manaBalanceKey = this.drizzleInstance.contracts.ManaBank.methods[
+        "balanceOf"
+      ].cacheCall(this.activeAccount);
+      this.manaBalanceKey = manaBalanceKey;
+    },
+
+    getCollectibles() {
+      // TODO: deposit mana!
+      console.log("gothere!");
+    }
+  },
 
   watch: {
     isDrizzleInitialized() {
       this.loadPieChartData();
+      this.loadManaBalance();
     }
-  },
-
-  data() {
-    return {
-      kittyCountKey: "",
-      wizardCountKey: ""
-    };
   }
 };
 </script>
