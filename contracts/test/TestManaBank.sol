@@ -7,7 +7,6 @@ contract TestManaBank is ManaBank {
         tokenAddressToCount[_tokenAddress] = _count;
     }
 
-
     function mint(address _account, uint256 _amount) public {
         _mint(_account, _amount);
     }
