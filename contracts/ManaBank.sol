@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-contract ManaBank is ERC20, ReentrancyGuard{
+contract ManaBank is ERC20, ReentrancyGuard {
     using SafeMath for uint256;
 
     uint8 public constant manaPerNFT = 100;
