@@ -3,8 +3,7 @@
     <b-container>
       <b-row>
         <b-col cols="9">
-          <NFTSelector :nfts="wizards" />
-          <NFTSelector :nfts="kitties" />
+          <NFTSelector :nfts="nfts" />
         </b-col>
         <b-col cols="3">
           <div>Deposit {{this.selectedNFTs.length}} Wizards/Kitties</div>
@@ -33,39 +32,7 @@ export default {
 
   data() {
     return {
-      wizards: [
-        {
-          id: "2445",
-          src:
-            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2445.svg"
-        },
-        {
-          id: "2446",
-          src:
-            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2446.svg"
-        },
-        {
-          id: "2447",
-          src:
-            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2447.svg"
-        },
-        {
-          id: "2448",
-          src:
-            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2448.svg"
-        },
-        {
-          id: "2449",
-          src:
-            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2449.svg"
-        },
-        {
-          id: "2450",
-          src:
-            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2450.svg"
-        }
-      ],
-      kitties: []
+      nfts: []
     };
   },
 
@@ -83,8 +50,15 @@ export default {
           }
         })
         .then(response => {
-          this.wizards = response.data.wizards || [];
-          console.log(this.wizards);
+          let wizards = response.data.wizards || [];
+          wizards.forEach(item => {
+            let wizard = {
+              id: item.id,
+              src: `https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/${item.id}.svg`,
+              alt: `Wizard ${item.id}`
+            };
+            this.nfts.push(wizard);
+          });
         })
         .catch(error => {
           console.log(error);
@@ -104,8 +78,8 @@ export default {
         .then(response => {
           // response.data { "limit": 12, "offset": 0, "kitties": [], "total": 0 }
           // TODO: paging
-          this.kitties = response.data.kitties || [];
-          console.log(this.kitties);
+          let kitties = response.data.kitties || [];
+          console.log(kitties);
         })
         .catch(error => {
           console.log(error);
@@ -114,9 +88,9 @@ export default {
   },
 
   created() {
-    // const owner = "0xF0128825b0c518858971d8521498769148137936";
-    // this.getWizards(owner);
-    // this.getKitties(owner);
+    const owner = "0xF0128825b0c518858971d8521498769148137936";
+    this.getWizards(owner);
+    this.getKitties(owner);
   }
 };
 </script>
