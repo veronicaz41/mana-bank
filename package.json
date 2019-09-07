@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "migrate": "truffle compile && truffle migrate --reset truffle exec scripts/addTestData.js",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
