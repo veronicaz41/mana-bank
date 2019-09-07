@@ -5,16 +5,16 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    selectedToken: -1
+    selectedNFTs: -1
   },
   mutations: {
-    UPDATE_SELECTED_TOKEN: (state, tokenId) => {
-      state.selectedToken = tokenId;
+    UPDATE_SELECTED_NFTS: (state, nfts) => {
+      state.selectedNFTs = nfts;
     }
   },
   actions: {
-    setSelectedToken: ({ commit }, tokenId) => {
-      commit("UPDATE_SELECTED_TOKEN", tokenId);
+    setSelectedNFTs: ({ commit }, nfts) => {
+      commit("UPDATE_SELECTED_NFTS", nfts);
     }
   }
 });

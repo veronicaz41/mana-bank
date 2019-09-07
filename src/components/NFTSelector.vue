@@ -1,23 +1,36 @@
 <template>
   <div>
-    <NFT v-for="nft of this.nfts" v-bind:key="nft.tokenId" :nft="nft" />
+    <vue-select-image
+      :dataImages="this.nfts"
+      :is-multiple="true"
+      w="180px"
+      h="auto"
+      @onselectmultipleimage="onSelectNFTs"
+    ></vue-select-image>
   </div>
 </template>
 
 <script>
-import NFT from "@/components/NFT.vue";
+import { mapActions } from "vuex";
+import VueSelectImage from "vue-select-image";
+import "vue-select-image/dist/vue-select-image.css";
 
 export default {
   name: "NFTSelector",
+
   components: {
-    NFT
+    VueSelectImage
   },
 
-  // NOTE: list of {'tokenId', 'imageUrl'}
+  // NOTE: list of {'id', 'imageUrl'}
   props: ["nfts"],
 
-  data() {
-    return {};
+  methods: {
+    ...mapActions(["setSelectedNFTs"]),
+
+    onSelectNFTs(nfts) {
+      this.setSelectedNFTs(nfts);
+    }
   }
 };
 </script>
