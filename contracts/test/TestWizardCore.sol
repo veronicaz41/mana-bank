@@ -1,6 +1,6 @@
 pragma solidity ^0.5.10;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721Mintable.sol";
+import "./ApprovableERC721.sol";
 
-contract TestWizardCore is ERC721Mintable {
+contract TestWizardCore is ApprovableERC721 {
 }
