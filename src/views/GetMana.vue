@@ -6,9 +6,12 @@
           <NFTSelector :nfts="nfts" />
         </b-col>
         <b-col cols="3">
-          <div>Deposit {{this.selectedNFTs.length}} Wizards/Kitties</div>
+          <div>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</div>
           <b-button>Get MANA</b-button>
-          <div>MANA is bla bla bla, a description of what MANA is. And then a link to about page.</div>
+          <div>
+            MANA is bla bla bla, a description of what MANA is. And then a link
+            to about page.
+          </div>
         </b-col>
       </b-row>
     </b-container>
