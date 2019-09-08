@@ -150,12 +150,15 @@ export default {
     },
 
     getCollectibles() {
-      // TODO: deposit mana!
-      console.log("gothere!");
+      this.drizzleInstance.contracts.ManaBank.methods.burnMana.cacheSend(
+        this.selectedMana,
+        { from: this.activeAccount }
+      );
     }
   },
 
   watch: {
+    // TODO: May want to poll these methods continuously
     isDrizzleInitialized() {
       this.loadPieChartData();
       this.loadManaBalance();
