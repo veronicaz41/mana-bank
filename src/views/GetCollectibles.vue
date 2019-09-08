@@ -42,10 +42,6 @@
 <script>
 import { mapGetters } from "vuex";
 
-// TODO: Key this by network and store thsi somewhere else... Also, use real values!
-const KITTY_ADDRESS = "0xc0f0200a1c53D147109a185EBe0BDebc70f67aEC";
-const WIZARDS_ADDRESS = "0x0000000000000000000000000000000000000000";
-
 export default {
   name: "GetCollectibles",
 
@@ -132,14 +128,17 @@ export default {
   },
   methods: {
     loadPieChartData() {
+      const kittyAddress = this.drizzleInstance.contracts.KittyCore.address;
       const kittyCountKey = this.drizzleInstance.contracts.ManaBank.methods[
         "tokenAddressToCount"
-      ].cacheCall(KITTY_ADDRESS);
+      ].cacheCall(kittyAddress);
       this.kittyCountKey = kittyCountKey;
 
+      const wizardAddress = this.drizzleInstance.contracts.WizardPresale
+        .address;
       const wizardCountKey = this.drizzleInstance.contracts.ManaBank.methods[
         "tokenAddressToCount"
-      ].cacheCall(WIZARDS_ADDRESS);
+      ].cacheCall(wizardAddress);
       this.wizardCountKey = wizardCountKey;
     },
 
@@ -151,12 +150,15 @@ export default {
     },
 
     getCollectibles() {
-      // TODO: deposit mana!
-      console.log("gothere!");
+      this.drizzleInstance.contracts.ManaBank.methods.burnMana.cacheSend(
+        this.selectedMana,
+        { from: this.activeAccount }
+      );
     }
   },
 
   watch: {
+    // TODO: May want to poll these methods continuously
     isDrizzleInitialized() {
       this.loadPieChartData();
       this.loadManaBalance();

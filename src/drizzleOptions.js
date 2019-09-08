@@ -6,9 +6,6 @@ import TestWizardCore from "../build/contracts/TestWizardCore.json";
 
 import Web3 from "web3";
 
-console.log(Web3.version);
-console.log(Web3.eth);
-
 let contracts = [];
 if (process.env.NODE_ENV === "development") {
   const devNetwork = 50000; // As set by `npm run ganache`
