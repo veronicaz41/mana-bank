@@ -22,7 +22,7 @@ export default {
     VueSelectImage
   },
 
-  // NOTE: list of {'id', 'imageUrl'}
+  // NOTE: list of {'id', 'src', 'alt'}
   props: ["nfts"],
 
   methods: {

@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    selectedNFTs: -1
+    selectedNFTs: []
   },
   mutations: {
     UPDATE_SELECTED_NFTS: (state, nfts) => {

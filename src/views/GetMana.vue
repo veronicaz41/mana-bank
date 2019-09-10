@@ -6,11 +6,12 @@
           <NFTSelector :nfts="nfts" />
         </b-col>
         <b-col cols="3">
-          <div>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</div>
-          <b-button>Get MANA</b-button>
-          <div>
-            MANA is bla bla bla, a description of what MANA is. And then a link
-            to about page.
+          <div v-if="isDrizzleInitialized">
+            <div v-if="this.wizardsNeedApproval">Approve Wizards</div>
+            <div v-if="this.kittiesNeedApproval">Approve Kitties</div>
+            <div>Deposit {{this.selectedNFTs.length}} Wizards/Kitties</div>
+            <b-button @click="getMana">Get MANA</b-button>
+            <div>MANA is bla bla bla, a description of what MANA is. And then a link to about page.</div>
           </div>
         </b-col>
       </b-row>
@@ -20,7 +21,7 @@
 
 <script>
 import NFTSelector from "@/components/NFTSelector.vue";
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import axios from "axios";
 
 export default {
@@ -29,14 +30,18 @@ export default {
     NFTSelector
   },
 
-  computed: {
-    ...mapState(["selectedNFTs"])
-  },
-
   data() {
     return {
-      nfts: []
+      nfts: [],
+      wizardsNeedApproval: false,
+      kittiesNeedApproval: false
     };
+  },
+
+  computed: {
+    ...mapState(["selectedNFTs"]),
+    ...mapGetters("drizzle", ["isDrizzleInitialized", "drizzleInstance"]),
+    ...mapGetters("accounts", ["activeAccount"])
   },
 
   methods: {
@@ -58,7 +63,8 @@ export default {
             let wizard = {
               id: item.id,
               src: `https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/${item.id}.svg`,
-              alt: `Wizard ${item.id}`
+              alt: `Wizard ${item.id}`,
+              type: "wizard"
             };
             this.nfts.push(wizard);
           });
@@ -82,18 +88,61 @@ export default {
           // response.data { "limit": 12, "offset": 0, "kitties": [], "total": 0 }
           // TODO: paging
           let kitties = response.data.kitties || [];
-          console.log(kitties);
+          kitties.forEach(item => {
+            let kitty = {
+              id: item.id,
+              src: item.image_url,
+              alt: `Kitty ${item.id}`,
+              type: "kitty"
+            };
+            this.nfts.push(kitty);
+          });
         })
         .catch(error => {
           console.log(error);
         });
+    },
+
+    async getMana() {
+      // TODO: this button should show loading when "isDrizzleInitialized()" is false
     }
   },
 
   created() {
     const owner = "0xF0128825b0c518858971d8521498769148137936";
+    // const owner = this.activeAccount;
     this.getWizards(owner);
     this.getKitties(owner);
+  },
+
+  watch: {
+    async selectedNFTs() {
+      let found = this.selectedNFTs.find(item => item.type == "wizard");
+      if (found) {
+        let wizardAddress = this.drizzleInstance.contracts.WizardPresale.options
+          .address;
+        let isWizardsApproved = await this.drizzleInstance.contracts.WizardPresale.methods[
+          "isApprovedForAll"
+        ](this.activeAccount, wizardAddress).call();
+        this.wizardsNeedApproval = !isWizardsApproved;
+      } else {
+        this.wizardsNeedApproval = false;
+      }
+
+      found = this.selectedNFTs.find(item => {
+        item.type == "kitty";
+      });
+      if (found) {
+        let kittyAddress = this.drizzleInstance.contracts.KittyCore.options
+          .address;
+        let isKittiesApproved = await this.drizzleInstance.contracts.KittyCore.methods[
+          "isApprovedForAll"
+        ](this.activeAccount, kittyAddress).call();
+        this.kittiesNeedApproval = !isKittiesApproved;
+      } else {
+        this.kittiesNeedApproval = false;
+      }
+    }
   }
 };
 </script>
