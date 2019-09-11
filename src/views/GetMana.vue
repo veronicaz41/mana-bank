@@ -7,10 +7,18 @@
         </b-col>
         <b-col cols="3">
           <div v-if="isDrizzleInitialized">
-            <div v-if="this.wizardsNeedApproval">Approve Wizards</div>
-            <div v-if="this.kittiesNeedApproval">Approve Kitties</div>
-            <div>Deposit {{this.selectedNFTs.length}} Wizards/Kitties</div>
-            <b-button @click="getMana">Get MANA</b-button>
+            <div v-if="this.wizardsNeedApproval">
+              <p>Please approve us to manage your wizards assets</p>
+              <b-button @click="approveWizards">Approve wizards</b-button>
+            </div>
+            <div v-if="this.kittiesNeedApproval">
+              <p>Please approve us to manage your wizards assets</p>
+              <b-button @click="approveKitties">Approve kitties</b-button>
+            </div>
+            <div>
+              <p>Deposit {{this.selectedNFTs.length}} Wizards/Kitties</p>
+              <b-button @click="getMana">Get MANA</b-button>
+            </div>
             <div>MANA is bla bla bla, a description of what MANA is. And then a link to about page.</div>
           </div>
         </b-col>
@@ -103,9 +111,39 @@ export default {
         });
     },
 
-    async getMana() {
-      // TODO: this button should show loading when "isDrizzleInitialized()" is false
-    }
+    async isWizardsApproved() {
+      let wizardAddress = this.drizzleInstance.contracts.WizardPresale.options
+        .address;
+      return await this.drizzleInstance.contracts.WizardPresale.methods[
+        "isApprovedForAll"
+      ](this.activeAccount, wizardAddress).call();
+    },
+
+    async isKittiesApproved() {
+      let kittyAddress = this.drizzleInstance.contracts.KittyCore.options
+        .address;
+      return await this.drizzleInstance.contracts.KittyCore.methods[
+        "isApprovedForAll"
+      ](this.activeAccount, kittyAddress).call();
+    },
+
+    approveWizards() {
+      this.drizzleInstance.contracts.WizardPresale.methods.setApprovalForAll.cacheSend(
+        this.drizzleInstance.contracts.ManaBank.options.address,
+        true,
+        { from: this.activeAccount }
+      );
+    },
+
+    approveKitties() {
+      this.drizzleInstance.contracts.KittyCore.methods.setApprovalForAll.cacheSend(
+        this.drizzleInstance.contracts.ManaBank.options.address,
+        true,
+        { from: this.activeAccount }
+      );
+    },
+
+    getMana() {}
   },
 
   created() {
@@ -115,30 +153,34 @@ export default {
     this.getKitties(owner);
   },
 
+  mounted() {
+    this.$drizzleEvents.$on("drizzle/contractEvent", async payload => {
+      const { contractName, eventName, data } = payload;
+      if (eventName == "ApprovalForAll") {
+        if (!data.approved) return;
+        if (contractName == "WizardPresale") {
+          this.wizardsNeedApproval = false;
+        } else if (contractName == "KittyCore") {
+          this.kittiesNeedApproval = false;
+        }
+      }
+    });
+  },
+
   watch: {
     async selectedNFTs() {
       let found = this.selectedNFTs.find(item => item.type == "wizard");
       if (found) {
-        let wizardAddress = this.drizzleInstance.contracts.WizardPresale.options
-          .address;
-        let isWizardsApproved = await this.drizzleInstance.contracts.WizardPresale.methods[
-          "isApprovedForAll"
-        ](this.activeAccount, wizardAddress).call();
-        this.wizardsNeedApproval = !isWizardsApproved;
+        const isApproved = await this.isWizardsApproved();
+        this.wizardsNeedApproval = !isApproved;
       } else {
         this.wizardsNeedApproval = false;
       }
 
-      found = this.selectedNFTs.find(item => {
-        item.type == "kitty";
-      });
+      found = this.selectedNFTs.find(item => item.type == "kitty");
       if (found) {
-        let kittyAddress = this.drizzleInstance.contracts.KittyCore.options
-          .address;
-        let isKittiesApproved = await this.drizzleInstance.contracts.KittyCore.methods[
-          "isApprovedForAll"
-        ](this.activeAccount, kittyAddress).call();
-        this.kittiesNeedApproval = !isKittiesApproved;
+        const isApproved = await this.isKittiesApproved();
+        this.kittiesNeedApproval = !isApproved;
       } else {
         this.kittiesNeedApproval = false;
       }

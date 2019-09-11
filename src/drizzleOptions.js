@@ -51,7 +51,10 @@ const options = {
 
   // The contracts to monitor
   contracts: contracts,
-  events: {},
+  events: {
+    WizardPresale: ["ApprovalForAll"],
+    KittyCore: ["ApprovalForAll"]
+  },
   polls: {
     // check accounts ever 15 seconds
     accounts: 15000
