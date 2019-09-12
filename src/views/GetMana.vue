@@ -86,22 +86,26 @@ export default {
         {
           id: 1,
           src:
-            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1.svg"
+            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/1.svg",
+          type: "wizard"
         },
         {
           id: 2,
           src:
-            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2.svg"
+            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/2.svg",
+          type: "wizard"
         },
         {
           id: 3,
           src:
-            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/3.svg"
+            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/3.svg",
+          type: "wizard"
         },
         {
           id: 4,
           src:
-            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/4.svg"
+            "https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/4.svg",
+          type: "wizard"
         }
       ];
       this.nfts.push(...wizards);
@@ -142,37 +146,24 @@ export default {
         {
           id: 5,
           src:
-            "https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/5.svg"
+            "https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/5.svg",
+          type: "kitty"
         },
         {
           id: 6,
           src:
-            "https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/6.svg"
+            "https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/6.svg",
+          type: "kitty"
         },
         {
           id: 7,
           src:
-            "https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/7.svg"
+            "https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/7.svg",
+          type: "kitty"
         }
       ];
       this.nfts.push(...kitties);
       console.log(owner);
-    },
-
-    async isWizardsApproved() {
-      let wizardAddress = this.drizzleInstance.contracts.WizardPresale.options
-        .address;
-      return await this.drizzleInstance.contracts.WizardPresale.methods[
-        "isApprovedForAll"
-      ](this.activeAccount, wizardAddress).call();
-    },
-
-    async isKittiesApproved() {
-      let kittyAddress = this.drizzleInstance.contracts.KittyCore.options
-        .address;
-      return await this.drizzleInstance.contracts.KittyCore.methods[
-        "isApprovedForAll"
-      ](this.activeAccount, kittyAddress).call();
     },
 
     approveWizards() {
@@ -240,18 +231,25 @@ export default {
 
   watch: {
     async selectedNFTs() {
+      const manaAddress = this.drizzleInstance.contracts.ManaBank.options
+        .address;
+
       let found = this.selectedNFTs.find(item => item.type == "wizard");
       if (found) {
-        const isApproved = await this.isWizardsApproved();
-        this.wizardsNeedApproval = !isApproved;
+        const isWizardsApproved = await this.drizzleInstance.contracts.WizardPresale.methods
+          .isApprovedForAll(this.activeAccount, manaAddress)
+          .call();
+        this.wizardsNeedApproval = !isWizardsApproved;
       } else {
         this.wizardsNeedApproval = false;
       }
 
       found = this.selectedNFTs.find(item => item.type == "kitty");
       if (found) {
-        const isApproved = await this.isKittiesApproved();
-        this.kittiesNeedApproval = !isApproved;
+        const isKittiesApproved = await this.drizzleInstance.contracts.KittyCore.methods
+          .isApprovedForAll(this.activeAccount, manaAddress)
+          .call();
+        this.kittiesNeedApproval = !isKittiesApproved;
       } else {
         this.kittiesNeedApproval = false;
       }
