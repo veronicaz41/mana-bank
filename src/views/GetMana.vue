@@ -143,7 +143,30 @@ export default {
       );
     },
 
-    getMana() {}
+    getMana() {
+      const wizardAddress = this.drizzleInstance.contracts.WizardPresale.options
+        .address;
+      const kittyAddress = this.drizzleInstance.contracts.KittyCore.options
+        .address;
+
+      let tokenAddresses = [];
+      let tokenIds = [];
+      this.selectedNFTs.forEach(item => {
+        if (item.type == "wizard") {
+          tokenAddresses.push(wizardAddress);
+          tokenIds.push(item.id);
+        } else if (item.type == "kitty") {
+          tokenAddresses.push(kittyAddress);
+          tokenIds.push(item.id);
+        }
+      });
+
+      this.drizzleInstance.contracts.ManaBank.methods.getMana.cacheSend(
+        tokenAddresses,
+        tokenIds,
+        { from: this.activeAccount }
+      );
+    }
   },
 
   created() {
