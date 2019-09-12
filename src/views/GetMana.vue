@@ -16,7 +16,7 @@
               <b-button @click="approveKitties">Approve kitties</b-button>
             </div>
             <div>
-              <p>Deposit {{this.selectedNFTs.length}} Wizards/Kitties</p>
+              <p>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</p>
               <b-button @click="getMana">Get MANA</b-button>
             </div>
             <div>MANA is bla bla bla, a description of what MANA is. And then a link to about page.</div>
@@ -30,7 +30,7 @@
 <script>
 import NFTSelector from "@/components/NFTSelector.vue";
 import { mapGetters, mapState } from "vuex";
-import axios from "axios";
+//import axios from "axios";
 
 export default {
   name: "GetMana",
@@ -105,6 +105,7 @@ export default {
         }
       ];
       this.nfts.push(...wizards);
+      console.log(owner);
     },
 
     getKitties(owner) {
@@ -155,6 +156,7 @@ export default {
         }
       ];
       this.nfts.push(...kitties);
+      console.log(owner);
     },
 
     async isWizardsApproved() {
