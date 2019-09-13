@@ -95,10 +95,6 @@ contract ManaBank is ERC20, ReentrancyGuard {
                 tokenContract.ownerOf(tokenId) == msg.sender,
                 "ManaBank: You must own all tokens being deposited for mana"
             );
-            require(
-                tokenContract.getApproved(tokenId) == address(this),
-                "ManaBank: Must approve transfer on all tokens being deposited for mana"
-            );
 
             tokenContract.transferFrom(msg.sender, address(this), tokenId);
             _depositToken(tokenAddress, tokenId);
