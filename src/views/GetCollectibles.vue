@@ -4,35 +4,30 @@
       <b-row>
         <b-col cols="9">
           <!-- NOTE: If we do fungible power token, we'll want to change what we display here -->
-          <apexchart
-            width="350"
-            type="pie"
-            :options="pieChart.options"
-            :series="pieChart.series"
-          ></apexchart>
+          <apexchart width="350" type="pie" :options="pieChart.options" :series="pieChart.series"></apexchart>
         </b-col>
 
         <b-col cols="3">
-          <b-form-input
-            id="mana-select"
-            v-model="selectedMana"
-            :state="validSelectedMana"
-            placeholder="Enter mana to deposit"
-            aria-describedby="input-live-feedback"
-            type="number"
-          >
-          </b-form-input>
+          <div v-if="isDrizzleInitialized">
+            <b-form-input
+              id="mana-select"
+              v-model="selectedMana"
+              :state="validSelectedMana"
+              placeholder="Enter mana to deposit"
+              aria-describedby="input-live-feedback"
+              type="number"
+            ></b-form-input>
 
-          <b-form-invalid-feedback id="mana-select-feedback">
-            Enter an amount of Mana you can afford
-          </b-form-invalid-feedback>
+            <b-form-invalid-feedback
+              id="mana-select-feedback"
+            >Enter an amount of Mana you can afford</b-form-invalid-feedback>
 
-          <b-button
-            :disabled="!validSelectedMana"
-            variant="primary"
-            @click="getCollectibles"
-            >Get Collectibles</b-button
-          >
+            <b-button
+              :disabled="!validSelectedMana"
+              variant="primary"
+              @click="getCollectibles"
+            >Get Collectibles</b-button>
+          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -65,10 +60,12 @@ export default {
 
     // TODO: unify shitty null checking logic in all drizzle getters
     validSelectedMana() {
+      if (this.selectedMana == null) {
+        return null;
+      }
       if (
         this.manaBalanceKey != null &&
-        this.manaBalanceKey in this.contractInstances.ManaBank.balanceOf &&
-        this.selectedMana != null
+        this.manaBalanceKey in this.contractInstances.ManaBank.balanceOf
       ) {
         const manaBalance = parseInt(
           this.contractInstances.ManaBank.balanceOf[this.manaBalanceKey].value
@@ -126,6 +123,7 @@ export default {
       }
     }
   },
+
   methods: {
     loadPieChartData() {
       const kittyAddress = this.drizzleInstance.contracts.KittyCore.address;
@@ -157,8 +155,12 @@ export default {
     }
   },
 
+  mounted() {
+    this.loadPieChartData();
+    this.loadManaBalance();
+  },
+
   watch: {
-    // TODO: May want to poll these methods continuously
     isDrizzleInitialized() {
       this.loadPieChartData();
       this.loadManaBalance();
