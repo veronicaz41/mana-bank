@@ -14,8 +14,8 @@
 
         <b-col cols="3">
           <div v-if="isDrizzleInitialized">
-            <p>You can burn Mana to get random wizards or kitties</p>
-            <p>Each wizard and kitty costs 100 Mana</p>
+            <p>You can burn XMN to get random wizards or kitties</p>
+            <p>Each wizard and kitty costs 100 XMN</p>
             <b-form-input
               id="mana-select"
               v-model="selectedMana"
@@ -26,7 +26,7 @@
             ></b-form-input>
 
             <b-form-invalid-feedback id="mana-select-feedback"
-              >Enter an amount of Mana you can afford</b-form-invalid-feedback
+              >Enter an amount of XMN you can afford</b-form-invalid-feedback
             >
 
             <b-button
@@ -66,7 +66,6 @@ export default {
     ...mapGetters("drizzle", ["isDrizzleInitialized", "drizzleInstance"]),
     ...mapGetters("accounts", ["activeAccount"]),
 
-    // TODO: unify shitty null checking logic in all drizzle getters
     validSelectedMana() {
       if (this.selectedMana == null) {
         return null;
@@ -81,7 +80,6 @@ export default {
 
         return this.selectedMana >= 0 && this.selectedMana <= manaBalance;
       } else {
-        // TODO: Loading!
         return false;
       }
     },
@@ -91,7 +89,6 @@ export default {
         const tokenAddressToCountMap = this.contractInstances.ManaBank
           .tokenAddressToCount;
 
-        // TODO: Actually figure out why this doesn't work!
         if (
           this.kittyCountKey in tokenAddressToCountMap &&
           this.wizardCountKey in tokenAddressToCountMap
@@ -111,17 +108,13 @@ export default {
           };
         }
 
-        // TODO: Loading or some indication that this didn't work
         return {
           series: [50, 50],
           options: {
             labels: ["Wizards", "Kitties"]
           }
         };
-      }
-
-      // TODO: should show a loading screen instead
-      else {
+      } else {
         return {
           series: [50, 50],
           options: {
