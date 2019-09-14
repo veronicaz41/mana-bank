@@ -4,7 +4,7 @@
       :dataImages="this.nfts"
       :is-multiple="true"
       w="180px"
-      h="auto"
+      h="240px"
       @onselectmultipleimage="onSelectNFTs"
     ></vue-select-image>
   </div>
