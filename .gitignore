@@ -21,7 +21,12 @@ yarn-error.log*
 *.sw?
 
 .secret
-build/
+build/contracts/*
+
+!build/contracts/TestManaBank.json
+!build/contracts/TestKittyCore.json
+!build/contracts/TestWizardCore.json
+!build/contracts/ManaBank.json
 
 # For truffle-watch
 watch-config.json
