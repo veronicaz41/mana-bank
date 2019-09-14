@@ -125,6 +125,8 @@ contract ManaBank is ERC20, ReentrancyGuard {
 
             IERC721 tokenContract = IERC721(tokenToSend.tokenAddress);
             tokenContract.transferFrom(address(this), msg.sender, tokenToSend.tokenId);
+
+            emit BurnMana(tokenToSend.tokenAddress, tokenToSend.tokenId);
         }
     }
 }
