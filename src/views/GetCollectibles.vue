@@ -9,6 +9,8 @@
 
         <b-col cols="3">
           <div v-if="isDrizzleInitialized">
+            <p>You can burn Mana to get random wizards or kitties</p>
+            <p>Each wizard and kitty costs 100 Mana</p>
             <b-form-input
               id="mana-select"
               v-model="selectedMana"
