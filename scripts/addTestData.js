@@ -7,22 +7,13 @@ const kittyCount = 101;
 const wizardCount = 302;
 
 // Use ganache-cli -d 'foo' to generate test eth at this address
-const mintAddress = '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
+const mintAddress = "0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1";
 
 const manaToMint = 100000;
 
-const wizardIdsToMint = [
-  1,
-  2,
-  3,
-  4
-]
+const wizardIdsToMint = [1, 2, 3, 4];
 
-const kittyIdsToMint = [
-  5,
-  6,
-  7
-]
+const kittyIdsToMint = [5, 6, 7];
 
 module.exports = async function() {
   const mb = await TestManaBank.deployed();
@@ -43,6 +34,6 @@ module.exports = async function() {
 
   console.log("Minting wizards");
   for (const wizardId of wizardIdsToMint) {
-    await kc.mint(mintAddress, wizardId);
+    await wc.mint(mintAddress, wizardId);
   }
-}
+};
