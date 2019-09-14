@@ -38,6 +38,12 @@
             </li>
           </ol>
 
+          <!-- TODO: Add link for mainnet deploy! -->
+          <p>
+            The ManaBank contract is currently deployed on mainnet
+            <a href="https://etherscan.io">here</a>
+          </p>
+
           <h4>Why</h4>
 
           <p>

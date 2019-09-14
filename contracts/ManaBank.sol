@@ -49,7 +49,6 @@ contract ManaBank is ERC20, ReentrancyGuard {
     }
 
     function _swap(uint256 idx1, uint256 idx2) internal {
-        // TODO: Make sure this works
         DepositedToken memory token1 = idxToDepositedToken[idx1];
         idxToDepositedToken[idx1] = idxToDepositedToken[idx2];
         idxToDepositedToken[idx2] = token1;
