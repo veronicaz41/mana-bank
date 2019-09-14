@@ -78,7 +78,6 @@ export async function getKitties(owner, drizzle) {
   );
   // response.data { "limit": 12, "offset": 0, "kitties": [], "total": 0 }
   // TODO: paging
-  console.log(response);
   const kitties = response.data.kitties || [];
   kitties.forEach(item => {
     let kitty = {

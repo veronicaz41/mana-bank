@@ -45,7 +45,7 @@ const options = {
     block: false,
     fallback: {
       type: "ws",
-      url: "ws://127.0.0.1:9545"
+      url: "ws://127.0.0.1:8545"
     }
   },
 
@@ -53,7 +53,8 @@ const options = {
   contracts: contracts,
   events: {
     WizardPresale: ["ApprovalForAll"],
-    KittyCore: ["ApprovalForAll"]
+    KittyCore: ["ApprovalForAll"],
+    ManaBank: ["GetMana"]
   },
   polls: {
     // check accounts ever 15 seconds

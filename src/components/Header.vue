@@ -4,16 +4,14 @@
       <b-row>
         <b-col cols="9">
           <div id="nav">
-            <router-link to="/">Get Mana</router-link> |
-            <router-link to="/get_collectibles">Get Collectibles</router-link> |
+            <router-link to="/">Get Mana</router-link>|
+            <router-link to="/get_collectibles">Get Collectibles</router-link>|
             <router-link to="/trade">Trade for ETH</router-link>
           </div>
         </b-col>
 
         <b-col cols="3">
-          <div id="balance">
-            {{ this.manaBalance }}
-          </div>
+          <div id="balance">Mana Balance: {{ this.manaBalance }}</div>
         </b-col>
       </b-row>
     </b-container>
@@ -38,7 +36,6 @@ export default {
     ...mapGetters("accounts", ["activeAccount"]),
 
     manaBalance() {
-      console.log(this.manaBalanceKey);
       if (
         this.manaBalanceKey != null &&
         this.manaBalanceKey in this.contractInstances.ManaBank.balanceOf
@@ -64,7 +61,6 @@ export default {
   },
 
   watch: {
-    // TODO: May want to poll these methods continuously
     isDrizzleInitialized() {
       this.loadManaBalance();
     }
