@@ -1,24 +1,61 @@
 <template>
-  <div>
+  <!-- <div class="navbar-main navbar-expand navbar-light">
     <b-container>
       <b-row>
-        <b-col cols="9">
-          <div id="nav">
-            <router-link to="/">Get XMN</router-link>|
-            <router-link to="/get_collectibles">Get Collectibles</router-link>|
-            <router-link to="/about">About</router-link>
-
-            <!-- TODO: Put back in with a link to Uniswap pool! -->
-            <!--<router-link to="/trade">Trade for ETH</router-link>-->
-          </div>
-        </b-col>
-
-        <b-col cols="3">
-          <div id="balance">XMN Balance: {{ this.manaBalance }}</div>
-        </b-col>
+        <router-link slot="brand" class="navbar-brand mr-lg-5" to="/">
+            <img src="img/brand/white.png" alt="Mana Bank">
+        </router-link>
+        <div class="navbar-nav align-items-center">
+          <router-link class="nav-item" to="/get_collectibles">Get Collectibles</router-link>
+          <router-link class="nav-item" to="/about">About</router-link>
+          <!-- TODO: Put back in with a link to Uniswap pool! -->
+          <!--<router-link to="/trade">Trade for ETH</router-link>-->
+        <!-- </div>
+        <div class="navbar-nav align-items-center ml-auto">
+          XMN Balance: {{ this.manaBalance }}
+        </div>
       </b-row>
     </b-container>
-  </div>
+  </div> -->
+  <header class="header-global">
+    <base-nav class="navbar-main" type="" effect="light" expand>
+      <router-link slot="brand" class="navbar-brand mr-lg-5" to="/">
+        <img src="../assets/logo.png" alt="Mana Bank">
+        <span>Mana Bank</span>
+      </router-link>
+
+      <div slot="content-header" slot-scope="{closeMenu}" :manaBalance="manaBalance">
+        <b-row>
+          <div class="col-6 collapse-brand">
+            <img src="../assets/logo.png" alt="Mana Bank">
+            <span class="navbar-brand collapse-brand-text">Mana Bank</span>
+          </div>
+          <div class="col-6 collapse-close">
+            <close-button @click="closeMenu"></close-button>
+          </div>
+        </b-row>
+        <b-row>
+          <b-col class="col-12 collapse-detail">
+            XMN Balance: {{ manaBalance }}
+          </b-col>
+        </b-row>
+      </div>
+
+      <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
+        <li class="nav-item">
+          <router-link class="nav-link" to="/get_collectibles">Get Collectibles</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" to="/about">About</router-link>
+        </li>
+      </ul>
+      <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+        <li class="nav-item d-none d-lg-block ml-lg-4">
+          XMN Balance: {{ this.manaBalance }}
+        </li>
+      </ul>
+    </base-nav>
+  </header>
 </template>
 
 <script>
@@ -72,16 +109,13 @@ export default {
 </script>
 
 <style>
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.navbar-light .navbar-toggler {
+  border-style: none !important;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.collapse-detail {
+  margin-top: 12px;
 }
-
-#nav {
-  margin-bottom: 10px;
+.collapse-brand-text {
+  margin-right: 0px;
 }
 </style>
