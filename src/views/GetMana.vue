@@ -92,6 +92,15 @@ export default {
         tokenIds,
         { from: this.activeAccount }
       );
+    },
+
+    async getNFTs() {
+      if (!this.isDrizzleInitialized) return;
+      const owner = this.activeAccount;
+      const wizards = await getWizards(owner, this.drizzleInstance);
+      this.nfts.push(...wizards);
+      const kitties = await getKitties(owner, this.drizzleInstance);
+      this.nfts.push(...kitties);
     }
   },
 
@@ -106,19 +115,17 @@ export default {
           this.kittiesNeedApproval = false;
         }
       } else if (eventName == "GetMana") {
+        console.log("GetMana");
         const tokenId = data.tokenId;
         this.nfts = this.nfts.filter(item => item.id != tokenId);
       }
     });
+    this.getNFTs();
   },
 
   watch: {
-    async isDrizzleInitialized() {
-      const owner = this.activeAccount;
-      const wizards = await getWizards(owner, this.drizzleInstance);
-      this.nfts.push(...wizards);
-      const kitties = await getKitties(owner, this.drizzleInstance);
-      this.nfts.push(...kitties);
+    isDrizzleInitialized() {
+      this.getNFTs();
     },
 
     async selectedNFTs() {
