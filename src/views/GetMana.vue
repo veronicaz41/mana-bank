@@ -17,9 +17,13 @@
             </div>
             <div>
               <p>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</p>
-              <b-button @click="getMana">Get MANA</b-button>
+              <b-button @click="getMana">Get XMN</b-button>
             </div>
-            <div>MANA is bla bla bla, a description of what MANA is. And then a link to about page.</div>
+            <div>
+              XMN is an ERC20 token that allows you to cash out your spare
+              CryptoKitties and CheezeWizards <em>quickly</em>. For more about
+              how XMN works, see <router-link to="/about">here</router-link>
+            </div>
           </div>
         </b-col>
       </b-row>

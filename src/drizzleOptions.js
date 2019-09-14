@@ -1,4 +1,6 @@
 import ManaBank from "../build/contracts/ManaBank.json";
+import KittyCore from "../build/contracts/KittyCore.json";
+import WizardPresale from "../build/contracts/WizardPresale.json";
 
 import TestManaBank from "../build/contracts/TestManaBank.json";
 import TestKittyCore from "../build/contracts/TestKittyCore.json";
@@ -36,8 +38,7 @@ if (process.env.NODE_ENV === "development") {
     }
   ];
 } else {
-  // TODO: Add Kitties/Wizards from 'fake' build files that point to the real contracts
-  contracts = [ManaBank];
+  contracts = [ManaBank, KittyCore, WizardPresale];
 }
 
 const options = {

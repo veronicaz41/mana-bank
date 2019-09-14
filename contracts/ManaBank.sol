@@ -8,6 +8,9 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 contract ManaBank is ERC20, ReentrancyGuard {
     using SafeMath for uint256;
 
+    string constant public name = "ManaBank token";
+    string constant public symbol = "XMN";
+
     uint8 public constant manaPerNFT = 100;
 
     // NOTE: Both of the following events assume manaPerNFT burned/gotten on each event
@@ -46,7 +49,6 @@ contract ManaBank is ERC20, ReentrancyGuard {
     }
 
     function _swap(uint256 idx1, uint256 idx2) internal {
-        // TODO: Make sure this works
         DepositedToken memory token1 = idxToDepositedToken[idx1];
         idxToDepositedToken[idx1] = idxToDepositedToken[idx2];
         idxToDepositedToken[idx2] = token1;

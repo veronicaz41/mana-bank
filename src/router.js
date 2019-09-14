@@ -17,9 +17,9 @@ export default new Router({
       component: () => import("./views/GetCollectibles.vue")
     },
     {
-      path: "/trade",
-      name: "Trade",
-      component: () => import("./views/Trade.vue")
+      path: "/about",
+      name: "About",
+      component: () => import("./views/About.vue")
     }
   ]
 });

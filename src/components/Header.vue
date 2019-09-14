@@ -4,14 +4,17 @@
       <b-row>
         <b-col cols="9">
           <div id="nav">
-            <router-link to="/">Get Mana</router-link>|
+            <router-link to="/">Get XMN</router-link>|
             <router-link to="/get_collectibles">Get Collectibles</router-link>|
-            <router-link to="/trade">Trade for ETH</router-link>
+            <router-link to="/about">About</router-link>
+
+            <!-- TODO: Put back in with a link to Uniswap pool! -->
+            <!--<router-link to="/trade">Trade for ETH</router-link>-->
           </div>
         </b-col>
 
         <b-col cols="3">
-          <div id="balance">Mana Balance: {{ this.manaBalance }}</div>
+          <div id="balance">XMN Balance: {{ this.manaBalance }}</div>
         </b-col>
       </b-row>
     </b-container>
@@ -67,3 +70,18 @@ export default {
   }
 };
 </script>
+
+<style>
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
+
+#nav {
+  margin-bottom: 10px;
+}
+</style>
