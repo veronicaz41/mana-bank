@@ -80,4 +80,8 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+#nav {
+  margin-bottom: 10px;
+}
 </style>
