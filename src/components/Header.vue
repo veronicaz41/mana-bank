@@ -4,14 +4,14 @@
       <b-row>
         <b-col cols="9">
           <div id="nav">
-            <router-link to="/">Get Mana</router-link>|
+            <router-link to="/">Get XMN</router-link>|
             <router-link to="/get_collectibles">Get Collectibles</router-link>|
             <router-link to="/trade">Trade for ETH</router-link>
           </div>
         </b-col>
 
         <b-col cols="3">
-          <div id="balance">Mana Balance: {{ this.manaBalance }}</div>
+          <div id="balance">XMN Balance: {{ this.manaBalance }}</div>
         </b-col>
       </b-row>
     </b-container>

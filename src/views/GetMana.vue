@@ -17,11 +17,11 @@
             </div>
             <div>
               <p>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</p>
-              <b-button @click="getMana">Get MANA</b-button>
+              <b-button @click="getMana">Get XMN</b-button>
             </div>
             <div>
-              MANA is bla bla bla, a description of what MANA is. And then a
-              link to about page.
+              XMN is bla bla bla, a description of what XMN is. And then a link
+              to about page.
             </div>
           </div>
         </b-col>
