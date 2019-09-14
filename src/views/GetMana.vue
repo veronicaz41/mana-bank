@@ -105,6 +105,9 @@ export default {
         } else if (contractName == "KittyCore") {
           this.kittiesNeedApproval = false;
         }
+      } else if (eventName == "GetMana") {
+        const tokenId = data.tokenId;
+        this.nfts = this.nfts.filter(item => item.id != tokenId);
       }
     });
   },

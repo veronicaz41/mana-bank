@@ -53,7 +53,8 @@ const options = {
   contracts: contracts,
   events: {
     WizardPresale: ["ApprovalForAll"],
-    KittyCore: ["ApprovalForAll"]
+    KittyCore: ["ApprovalForAll"],
+    ManaBank: ["GetMana"]
   },
   polls: {
     // check accounts ever 15 seconds
