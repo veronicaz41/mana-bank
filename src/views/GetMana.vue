@@ -115,7 +115,6 @@ export default {
           this.kittiesNeedApproval = false;
         }
       } else if (eventName == "GetMana") {
-        console.log("GetMana");
         const tokenId = data.tokenId;
         this.nfts = this.nfts.filter(item => item.id != tokenId);
       }
