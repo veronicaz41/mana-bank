@@ -20,8 +20,9 @@
               <b-button @click="getMana">Get XMN</b-button>
             </div>
             <div>
-              XMN is bla bla bla, a description of what XMN is. And then a link
-              to about page.
+              XMN is an ERC20 token that allows you to cash out your spare
+              CryptoKitties and CheezeWizards <em>quickly</em>. For more about
+              how XMN works, see <router-link to="/about">here</router-link>
             </div>
           </div>
         </b-col>

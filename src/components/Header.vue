@@ -6,7 +6,10 @@
           <div id="nav">
             <router-link to="/">Get XMN</router-link>|
             <router-link to="/get_collectibles">Get Collectibles</router-link>|
-            <router-link to="/trade">Trade for ETH</router-link>
+            <router-link to="/about">About</router-link>
+
+            <!-- TODO: Put back in with a link to Uniswap pool! -->
+            <!--<router-link to="/trade">Trade for ETH</router-link>-->
           </div>
         </b-col>
 
