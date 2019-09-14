@@ -128,6 +128,8 @@ export default {
 
   methods: {
     loadPieChartData() {
+      if (!this.isDrizzleInitialized) return;
+
       const kittyAddress = this.drizzleInstance.contracts.KittyCore.address;
       const kittyCountKey = this.drizzleInstance.contracts.ManaBank.methods[
         "tokenAddressToCount"
@@ -143,6 +145,8 @@ export default {
     },
 
     loadManaBalance() {
+      if (!this.isDrizzleInitialized) return;
+
       const manaBalanceKey = this.drizzleInstance.contracts.ManaBank.methods[
         "balanceOf"
       ].cacheCall(this.activeAccount);
