@@ -38,6 +38,7 @@ if (process.env.NODE_ENV === "development") {
     }
   ];
 } else {
+  // NOTE: May want to hardcode extraction of mainnet info as we do above for devnet
   contracts = [ManaBank, KittyCore, WizardPresale];
 }
 
