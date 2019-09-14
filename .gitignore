@@ -27,6 +27,8 @@ build/contracts/*
 !build/contracts/TestKittyCore.json
 !build/contracts/TestWizardCore.json
 !build/contracts/ManaBank.json
+!build/contracts/KittyCore.json
+!build/contracts/WizardPresale.json
 
 # For truffle-watch
 watch-config.json

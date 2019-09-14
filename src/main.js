@@ -19,6 +19,7 @@ Vue.use(drizzleVuePlugin, { store, drizzleOptions });
 Vue.component("apexchart", VueApexCharts);
 
 Vue.config.productionTip = false;
+Vue.config.devtools = true;
 
 new Vue({
   router,

@@ -31,7 +31,7 @@ module.exports = {
           privateKey,
           "https://mainnet.infura.io/v3/ef471a67b23a4bd0a1bef19d00b8164d"
         ),
-      network_id: 1, // kovan's id
+      network_id: 1
     }
   },
 
