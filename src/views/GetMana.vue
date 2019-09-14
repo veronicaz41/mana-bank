@@ -19,7 +19,10 @@
               <p>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</p>
               <b-button @click="getMana">Get MANA</b-button>
             </div>
-            <div>MANA is bla bla bla, a description of what MANA is. And then a link to about page.</div>
+            <div>
+              MANA is bla bla bla, a description of what MANA is. And then a
+              link to about page.
+            </div>
           </div>
         </b-col>
       </b-row>

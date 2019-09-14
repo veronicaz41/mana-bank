@@ -4,7 +4,12 @@
       <b-row>
         <b-col cols="9">
           <!-- NOTE: If we do fungible power token, we'll want to change what we display here -->
-          <apexchart width="350" type="pie" :options="pieChart.options" :series="pieChart.series"></apexchart>
+          <apexchart
+            width="350"
+            type="pie"
+            :options="pieChart.options"
+            :series="pieChart.series"
+          ></apexchart>
         </b-col>
 
         <b-col cols="3">
@@ -20,15 +25,16 @@
               type="number"
             ></b-form-input>
 
-            <b-form-invalid-feedback
-              id="mana-select-feedback"
-            >Enter an amount of Mana you can afford</b-form-invalid-feedback>
+            <b-form-invalid-feedback id="mana-select-feedback"
+              >Enter an amount of Mana you can afford</b-form-invalid-feedback
+            >
 
             <b-button
               :disabled="!validSelectedMana"
               variant="primary"
               @click="getCollectibles"
-            >Get Collectibles</b-button>
+              >Get Collectibles</b-button
+            >
           </div>
         </b-col>
       </b-row>
