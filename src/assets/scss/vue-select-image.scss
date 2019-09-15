@@ -1,11 +1,13 @@
+@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
 
 .vue-select-image__wrapper {
   overflow: auto;
   list-style-image: none;
   list-style-position: outside;
   list-style-type: none;
-  padding: 0px;
-  margin: 0px;
+  flex-wrap: wrap;
 }
 
 .vue-select-image__item {
@@ -13,7 +15,7 @@
   float: left;
 }
 
-.vue-select-image__thumbnail{
+.vue-select-image__thumbnail {
   padding: 6px;
   border: 1px solid #dddddd;
 
@@ -36,19 +38,24 @@
   transition: all 0.2s ease-in-out;
 }
 
-.vue-select-image__thumbnail--selected{
+.vue-select-image__thumbnail--selected {
   background: #0088cc;
 }
 
-.vue-select-image__img{
+.vue-select-image__img {
   -webkit-user-drag: none;
   display: block;
   max-width: 100%;
   margin-right: auto;
   margin-left: auto;
+
+  @include media-breakpoint-down(sm) {
+    width: 240px;
+    height: 320px;
+  }
 }
 
-.vue-select-image__lbl{
+.vue-select-image__lbl {
   line-height: 3;
 }
 

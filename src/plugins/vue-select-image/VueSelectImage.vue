@@ -1,7 +1,7 @@
 <template>
   <div :class="rootClass">
-    <ul :class="rootClass + '__wrapper'">
-      <li
+    <div :class="rootClass + '__wrapper'" class="d-flex justify-content-around">
+      <div
         v-for="(dataImage, index) in dataImagesLocal"
         :key="index"
         :class="rootClass + '__item'"
@@ -39,8 +39,8 @@
             <p class="label">{{ dataImage.alt }}</p>
           </a>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -159,5 +159,3 @@ export default {
   }
 };
 </script>
-
-<style src="./vue-select-image.css"></style>
