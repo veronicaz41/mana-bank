@@ -8,7 +8,7 @@
 // import BaseRadio from "./components/BaseRadio";
 // import BaseSlider from "./components/BaseSlider";
 // import BaseSwitch from "./components/BaseSwitch";
-// import Card from "./components/Card";
+import Card from "./components/Card";
 // import Icon from "./components/Icon";
 import BaseNav from "./components/BaseNav";
 import CloseButton from "./components/CloseButton";
@@ -25,7 +25,7 @@ export default {
     // Vue.component(BaseRadio.name, BaseRadio);
     // Vue.component(BaseSlider.name, BaseSlider);
     // Vue.component(BaseSwitch.name, BaseSwitch);
-    // Vue.component(Card.name, Card);
+    Vue.component(Card.name, Card);
     // Vue.component(Icon.name, Icon);
     Vue.component(BaseNav.name, BaseNav);
     Vue.component(CloseButton.name, CloseButton);

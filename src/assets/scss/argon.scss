@@ -43,7 +43,7 @@
 // @import "bootstrap/custom-forms";
 // @import "bootstrap/nav";
 // @import "bootstrap/navbar";
-// @import "bootstrap/card";
+@import "bootstrap/card";
 // @import "bootstrap/breadcrumb";
 // @import "bootstrap/pagination";
 // @import "bootstrap/badge";
@@ -57,7 +57,7 @@
 // @import "bootstrap/tooltip";
 // @import "bootstrap/popover";
 // @import "bootstrap/carousel";
-// @import "bootstrap/utilities";
+@import "bootstrap/utilities";
 // @import "bootstrap/print";
 
 // Custom components
@@ -71,7 +71,7 @@
 // @import "custom/avatars.scss";
 // @import "custom/badge.scss";
 @import "custom/buttons.scss";
-// @import "custom/card.scss";
+//@import "custom/card.scss";
 // @import "custom/carousel.scss";
 // @import "custom/close.scss";
 // @import "custom/custom-forms.scss";

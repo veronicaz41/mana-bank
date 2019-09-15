@@ -29,6 +29,7 @@ export default {
   }
 };
 </script>
+
 <style>
 .vue-select-image__item {
   margin-bottom: 24px;

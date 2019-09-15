@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="get-mana">
     <b-container>
       <b-row>
         <b-col lg="8">
@@ -7,22 +7,27 @@
         </b-col>
         <b-col lg="4">
           <div v-if="isDrizzleInitialized">
-            <div v-if="this.wizardsNeedApproval">
-              <p>Please approve us to manage your wizards assets</p>
-              <b-button @click="approveWizards">Approve wizards</b-button>
+            <div class="section">
+              <b>XMN</b> is an ERC20 token that allows you to cash out your
+              spare CryptoKitties and CheezeWizards <em>quickly</em>. For more
+              about how XMN works, see
+              <router-link to="/about">here</router-link>.
             </div>
-            <div v-if="this.kittiesNeedApproval">
-              <p>Please approve us to manage your wizards assets</p>
-              <b-button @click="approveKitties">Approve kitties</b-button>
+            <div class="section" v-if="this.wizardsNeedApproval">
+              <card shadow>
+                <p>Please approve us to manage your CheezeWizards</p>
+                <b-button @click="approveWizards">Approve</b-button>
+              </card>
             </div>
-            <div>
+            <div class="section" v-if="this.kittiesNeedApproval">
+              <card shadow>
+                <p>Please approve us to manage your CryptoKitties</p>
+                <b-button @click="approveKitties">Approve</b-button>
+              </card>
+            </div>
+            <div class="section">
               <p>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</p>
               <b-button @click="getMana">Get XMN</b-button>
-            </div>
-            <div>
-              XMN is an ERC20 token that allows you to cash out your spare
-              CryptoKitties and CheezeWizards <em>quickly</em>. For more about
-              how XMN works, see <router-link to="/about">here</router-link>
             </div>
           </div>
         </b-col>
@@ -158,3 +163,12 @@ export default {
   }
 };
 </script>
+
+<style>
+.get-mana .section {
+  margin-bottom: 26px;
+}
+.get-mana .card {
+  text-align: center;
+}
+</style>
