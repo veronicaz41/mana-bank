@@ -1,10 +1,6 @@
 <template>
   <div class="get-collectibles vld-parent">
-    <Loading 
-      :active.sync="isLoading"
-      loader="dots"
-      is-full-page
-    ></Loading>
+    <Loading :active.sync="isLoading" loader="dots" is-full-page></Loading>
     <b-container>
       <b-row>
         <b-col

@@ -1,10 +1,6 @@
 <template>
   <div class="get-mana">
-    <Loading 
-      :active.sync="isLoading"
-      loader="dots"
-      is-full-page
-    ></Loading>
+    <Loading :active.sync="isLoading" loader="dots" is-full-page></Loading>
     <b-container>
       <b-row>
         <b-col lg="4" order-lg="2">
@@ -58,6 +54,12 @@
         </b-col>
         <b-col lg="8" order-lg="1">
           <NFTSelector :nfts="nfts" />
+          <div v-if="!nfts.length" class="empty-state">
+            There is no
+            <a href="https://www.cheezewizards.com">CheezeWizards</a> or
+            <a href="https://www.cryptokitties.co">CryptoKitties</a> in your
+            account.
+          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -97,7 +99,11 @@ export default {
     ...mapGetters("accounts", ["activeAccount"]),
 
     isLoading() {
-      return this.wizardApprovalIsLoading || this.kittyApprovalIsLoading || this.getManaIsLoading;
+      return (
+        this.wizardApprovalIsLoading ||
+        this.kittyApprovalIsLoading ||
+        this.getManaIsLoading
+      );
     }
   },
 
@@ -241,5 +247,8 @@ export default {
   text-align: center;
   font-weight: 600;
   color: #b79afc;
+}
+.get-mana .empty-state {
+  margin-left: 6px;
 }
 </style>
