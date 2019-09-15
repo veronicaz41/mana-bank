@@ -1,5 +1,6 @@
 <template>
   <div class="get-mana">
+    <Loading :active.sync="isLoading" loader="dots" is-full-page></Loading>
     <b-container>
       <b-row>
         <b-col lg="4" order-lg="2">
@@ -53,6 +54,12 @@
         </b-col>
         <b-col lg="8" order-lg="1">
           <NFTSelector :nfts="nfts" />
+          <div v-if="!nfts.length && !getNFTIsLoading" class="empty-state">
+            There is no
+            <a href="https://www.cheezewizards.com">CheezeWizards</a> or
+            <a href="https://www.cryptokitties.co">CryptoKitties</a> in your
+            account.
+          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -60,14 +67,18 @@
 </template>
 
 <script>
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 import NFTSelector from "@/components/NFTSelector.vue";
 import { mapGetters, mapState } from "vuex";
 import { getWizards, getKitties } from "@/utils/GetNFTs.js";
 
 export default {
   name: "GetMana",
+
   components: {
-    NFTSelector
+    NFTSelector,
+    Loading
   },
 
   data() {
@@ -75,14 +86,27 @@ export default {
       nfts: [],
       wizardsNeedApproval: false,
       kittiesNeedApproval: false,
-      depositedCount: 0
+      depositedCount: 0,
+      wizardApprovalIsLoading: false,
+      kittyApprovalIsLoading: false,
+      getManaIsLoading: false,
+      getNFTIsLoading: true
     };
   },
 
   computed: {
     ...mapState(["selectedNFTs"]),
     ...mapGetters("drizzle", ["isDrizzleInitialized", "drizzleInstance"]),
-    ...mapGetters("accounts", ["activeAccount"])
+    ...mapGetters("accounts", ["activeAccount"]),
+
+    isLoading() {
+      return (
+        this.wizardApprovalIsLoading ||
+        this.kittyApprovalIsLoading ||
+        this.getManaIsLoading ||
+        this.getNFTIsLoading
+      );
+    }
   },
 
   methods: {
@@ -92,6 +116,7 @@ export default {
         true,
         { from: this.activeAccount }
       );
+      this.wizardApprovalIsLoading = true;
     },
 
     approveKitties() {
@@ -100,6 +125,7 @@ export default {
         true,
         { from: this.activeAccount }
       );
+      this.kittyApprovalIsLoading = true;
     },
 
     getMana() {
@@ -125,20 +151,30 @@ export default {
         tokenIds,
         { from: this.activeAccount }
       );
+
+      this.getManaIsLoading = true;
     },
 
     async getNFTs() {
       if (!this.isDrizzleInitialized) return;
+      this.getNFTIsLoading = true;
       const owner = this.activeAccount;
+      //const owner = "0xd13d7451b46f422e5e532e9bdf996a9a93b6058c";
       const wizards = await getWizards(owner, this.drizzleInstance);
       this.nfts.push(...wizards);
       const kitties = await getKitties(owner, this.drizzleInstance);
       this.nfts.push(...kitties);
+      this.getNFTIsLoading = false;
     }
   },
 
   mounted() {
+    this.getNFTs();
+
     this.depositedCount = 0;
+    this.wizardApprovalIsLoading = false;
+    this.kittyApprovalIsLoading = false;
+    this.getManaIsLoading = false;
 
     this.$drizzleEvents.$on("drizzle/contractEvent", async payload => {
       const { contractName, eventName, data } = payload;
@@ -146,8 +182,10 @@ export default {
         if (!data.approved) return;
         if (contractName == "WizardPresale") {
           this.wizardsNeedApproval = false;
+          this.wizardApprovalIsLoading = false;
         } else if (contractName == "KittyCore") {
           this.kittiesNeedApproval = false;
+          this.kittyApprovalIsLoading = false;
         }
       } else if (eventName == "GetMana") {
         const tokenId = data.tokenId;
@@ -158,9 +196,9 @@ export default {
           // tokenId has been deposited
           this.depositedCount += 1;
         }
+        this.getManaIsLoading = false;
       }
     });
-    this.getNFTs();
   },
 
   watch: {
@@ -215,5 +253,8 @@ export default {
   text-align: center;
   font-weight: 600;
   color: #b79afc;
+}
+.get-mana .empty-state {
+  margin-left: 6px;
 }
 </style>

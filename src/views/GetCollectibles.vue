@@ -1,5 +1,6 @@
 <template>
-  <div class="get-collectibles">
+  <div class="get-collectibles vld-parent">
+    <Loading :active.sync="isLoading" loader="dots" is-full-page></Loading>
     <b-container>
       <b-row>
         <b-col
@@ -71,6 +72,8 @@
 </template>
 
 <script>
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 import ImagesCollection from "@/components/ImagesCollection.vue";
 import { mapGetters } from "vuex";
 
@@ -78,7 +81,8 @@ export default {
   name: "GetCollectibles",
 
   components: {
-    ImagesCollection
+    ImagesCollection,
+    Loading
   },
 
   data() {
@@ -90,6 +94,8 @@ export default {
 
       selectedNumber: null,
       newNFTs: [],
+
+      isLoading: false,
 
       manaPerNFT: 100
     };
@@ -192,16 +198,17 @@ export default {
 
     getCollectibles() {
       this.newNFTs = [];
-
       this.drizzleInstance.contracts.ManaBank.methods.burnMana.cacheSend(
         this.selectedNumber * this.manaPerNFT,
         { from: this.activeAccount }
       );
+      this.isLoading = true;
     }
   },
 
   mounted() {
     this.newNFTs = [];
+    this.isLoading = false;
 
     this.loadPieChartData();
     this.loadManaBalance();
@@ -227,6 +234,7 @@ export default {
             url: `https://opensea.io/assets/0x2f4bdafb22bd92aa7b7552d270376de8edccbc1e/${tokenId}`
           };
           this.newNFTs.push(wizard);
+          this.isLoading = false;
         } else if (nftAddress == kittyAddress) {
           const found = this.newNFTs.find(
             item => item.type == "kitty" && item.id == tokenId
@@ -240,6 +248,7 @@ export default {
             url: `https://opensea.io/assets/0x06012c8cf97bead5deae237070f9587f8e7a266d/${tokenId}`
           };
           this.newNFTs.push(kitty);
+          this.isLoading = false;
         }
       }
     });
