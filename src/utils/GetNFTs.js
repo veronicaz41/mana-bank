@@ -12,8 +12,9 @@ export async function getWizards(owner, drizzle) {
         nfts.push({
           id: i,
           src: `https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/${i}.svg`,
-          alt: `Wizard ${i}`,
-          type: "wizard"
+          alt: `CheezeWizard #${i}`,
+          type: "wizard",
+          url: `https://opensea.io/assets/0x2f4bdafb22bd92aa7b7552d270376de8edccbc1e/${i}`
         });
       }
     }
@@ -38,8 +39,9 @@ export async function getWizards(owner, drizzle) {
     let wizard = {
       id: item.id,
       src: `https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/${item.id}.svg`,
-      alt: `Wizard ${item.id}`,
-      type: "wizard"
+      alt: `CheezeWizard #${item.id}`,
+      type: "wizard",
+      url: `https://opensea.io/assets/0x2f4bdafb22bd92aa7b7552d270376de8edccbc1e/${item.id}`
     };
     nfts.push(wizard);
   });
@@ -57,8 +59,9 @@ export async function getKitties(owner, drizzle) {
         nfts.push({
           id: i,
           src: `https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/${i}.svg`,
-          alt: `Kitty ${i}`,
-          type: "kitty"
+          alt: `CryptoKitty #${i}`,
+          type: "kitty",
+          url: `https://opensea.io/assets/0x06012c8cf97bead5deae237070f9587f8e7a266d/${i}`
         });
       }
     }
@@ -77,13 +80,15 @@ export async function getKitties(owner, drizzle) {
     }
   );
   // response.data { "limit": 12, "offset": 0, "kitties": [], "total": 0 }
+  // TODO: need to do paging!!!
   const kitties = response.data.kitties || [];
   kitties.forEach(item => {
     let kitty = {
       id: item.id,
       src: item.image_url,
-      alt: `Kitty ${item.id}`,
-      type: "kitty"
+      alt: item.name || `CryptoKitty #${item.id}`,
+      type: "kitty",
+      url: `https://opensea.io/assets/0x06012c8cf97bead5deae237070f9587f8e7a266d/${item.id}`
     };
     nfts.push(kitty);
   });
