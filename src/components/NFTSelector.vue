@@ -12,15 +12,9 @@
 
 <script>
 import { mapActions } from "vuex";
-import VueSelectImage from "vue-select-image";
-import "vue-select-image/dist/vue-select-image.css";
 
 export default {
   name: "NFTSelector",
-
-  components: {
-    VueSelectImage
-  },
 
   // NOTE: list of {'id', 'src', 'alt'}
   props: ["nfts"],
@@ -43,6 +37,6 @@ export default {
   text-align: center;
 }
 .vue-select-image__thumbnail--selected {
-  background-color: #7FB79AFC;
+  background-color: #7fb79afc;
 }
 </style>

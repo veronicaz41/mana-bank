@@ -12,11 +12,13 @@ import drizzleOptions from "./drizzleOptions";
 
 import VueApexCharts from "vue-apexcharts";
 
-import Argon from "./plugins/argon-kit";
+import Argon from "./plugins/argon/argon-kit";
+import VueSelectImage from "./plugins/vue-select-image/plugin";
 
 Vue.use(BootstrapVue);
 Vue.use(VueApexCharts);
 Vue.use(Argon);
+Vue.use(VueSelectImage);
 Vue.use(drizzleVuePlugin, { store, drizzleOptions });
 
 Vue.component("apexchart", VueApexCharts);
