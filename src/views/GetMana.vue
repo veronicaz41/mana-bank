@@ -2,10 +2,10 @@
   <div>
     <b-container>
       <b-row>
-        <b-col cols="9">
+        <b-col lg="8">
           <NFTSelector :nfts="nfts" />
         </b-col>
-        <b-col cols="3">
+        <b-col lg="4">
           <div v-if="isDrizzleInitialized">
             <div v-if="this.wizardsNeedApproval">
               <p>Please approve us to manage your wizards assets</p>
