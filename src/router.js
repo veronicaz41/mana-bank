@@ -12,7 +12,7 @@ export default new Router({
       component: () => import("./views/GetMana.vue")
     },
     {
-      path: "/get_collectibles",
+      path: "/get-collectibles",
       name: "GetCollectibles",
       component: () => import("./views/GetCollectibles.vue")
     },

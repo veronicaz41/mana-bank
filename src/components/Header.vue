@@ -1,6 +1,6 @@
 <template>
   <header class="header-global">
-    <base-nav class="navbar-main" type="" effect="light" expand>
+    <base-nav class="navbar-main" type effect="light" expand>
       <router-link slot="brand" class="navbar-brand mr-lg-3" to="/">
         <img src="../assets/logo.png" alt="Mana Bank" />
         <span>Mana Bank</span>
@@ -21,24 +21,24 @@
           </div>
         </b-row>
         <b-row>
-          <b-col class="col-12 collapse-detail">
-            XMN Balance: {{ manaBalance }}
-          </b-col>
+          <b-col class="col-12 collapse-detail"
+            >XMN Balance: {{ manaBalance }}</b-col
+          >
         </b-row>
       </div>
 
       <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
         <li class="nav-item">
-          <router-link class="nav-link" to="/get_collectibles">
-            Get Collectibles
-          </router-link>
+          <router-link class="nav-link" to="/get-collectibles"
+            >Get Collectibles</router-link
+          >
         </li>
         <!-- TODO: Put back in with a link to Uniswap pool! -->
         <!-- <li class="nav-item">
           <router-link class="nav-link" to="/trade">
             Trade for ETH
           </router-link>
-        </li> -->
+        </li>-->
         <li class="nav-item">
           <router-link class="nav-link" to="/about">About</router-link>
         </li>
