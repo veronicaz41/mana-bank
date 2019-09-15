@@ -2,7 +2,7 @@
   <div>
     <b-container>
       <b-row>
-        <b-col md="8">
+        <b-col md="8" class="d-flex justify-content-center">
           <!-- NOTE: If we do fungible power token, we'll want to change what we display here -->
           <apexchart
             width="350"
@@ -12,7 +12,7 @@
           ></apexchart>
         </b-col>
 
-        <b-col md="4">
+        <b-col md="4" class="d-flex justify-content-center">
           <div v-if="isDrizzleInitialized">
             <p>You can burn XMN to get random wizards or kitties</p>
             <p>Each wizard and kitty costs 100 XMN</p>
