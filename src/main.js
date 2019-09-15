@@ -12,8 +12,11 @@ import drizzleOptions from "./drizzleOptions";
 
 import VueApexCharts from "vue-apexcharts";
 
+import Argon from "./plugins/argon-kit";
+
 Vue.use(BootstrapVue);
 Vue.use(VueApexCharts);
+Vue.use(Argon);
 Vue.use(drizzleVuePlugin, { store, drizzleOptions });
 
 Vue.component("apexchart", VueApexCharts);
