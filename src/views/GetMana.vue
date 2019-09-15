@@ -1,28 +1,56 @@
 <template>
-  <div>
+  <div class="get-mana">
     <b-container>
       <b-row>
-        <b-col cols="9">
+        <b-col lg="8">
           <NFTSelector :nfts="nfts" />
         </b-col>
-        <b-col cols="3">
+        <b-col lg="4">
           <div v-if="isDrizzleInitialized">
-            <div v-if="this.wizardsNeedApproval">
-              <p>Please approve us to manage your wizards assets</p>
-              <b-button @click="approveWizards">Approve wizards</b-button>
+            <div class="section">
+              <b>XMN</b> is an ERC20 token that allows you to cash out your
+              spare CryptoKitties and CheezeWizards <em>quickly</em>. For more
+              about how XMN works, see
+              <router-link to="/about">here</router-link>.
             </div>
-            <div v-if="this.kittiesNeedApproval">
-              <p>Please approve us to manage your wizards assets</p>
-              <b-button @click="approveKitties">Approve kitties</b-button>
+            <div class="section" v-if="this.wizardsNeedApproval">
+              <card shadow>
+                <p>Please approve us to manage your CheezeWizards</p>
+                <b-button variant="primary" @click="approveWizards"
+                  >Approve</b-button
+                >
+              </card>
             </div>
-            <div>
-              <p>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</p>
-              <b-button @click="getMana">Get XMN</b-button>
+            <div class="section" v-if="this.kittiesNeedApproval">
+              <card shadow>
+                <p>Please approve us to manage your CryptoKitties</p>
+                <b-button variant="primary" @click="approveKitties"
+                  >Approve</b-button
+                >
+              </card>
             </div>
-            <div>
-              XMN is an ERC20 token that allows you to cash out your spare
-              CryptoKitties and CheezeWizards <em>quickly</em>. For more about
-              how XMN works, see <router-link to="/about">here</router-link>
+            <div class="section">
+              <p>
+                XMN can be redeemed by 'exiling' CheezeWizards or CryptoKitties.
+              </p>
+              <card shadow>
+                <p>
+                  Please select CheezeWizards or CryptoKitties you want to exile
+                </p>
+                <b-button
+                  variant="primary"
+                  @click="getMana"
+                  class="get-mana-button"
+                  >Get XMN</b-button
+                >
+                <p>Each exiled item = <b>100</b> XMN</p>
+              </card>
+            </div>
+            <div class="section confirmation" v-if="depositedCount">
+              <p>
+                {{ this.depositedCount }} CheezeWizards / CryptoKitties exiled
+              </p>
+              <p>You got {{ this.depositedCount * 100 }} XMN</p>
             </div>
           </div>
         </b-col>
@@ -46,7 +74,8 @@ export default {
     return {
       nfts: [],
       wizardsNeedApproval: false,
-      kittiesNeedApproval: false
+      kittiesNeedApproval: false,
+      depositedCount: 0
     };
   },
 
@@ -109,6 +138,8 @@ export default {
   },
 
   mounted() {
+    this.depositedCount = 0;
+
     this.$drizzleEvents.$on("drizzle/contractEvent", async payload => {
       const { contractName, eventName, data } = payload;
       if (eventName == "ApprovalForAll") {
@@ -120,7 +151,13 @@ export default {
         }
       } else if (eventName == "GetMana") {
         const tokenId = data.tokenId;
+        const oldCount = this.nfts.length;
         this.nfts = this.nfts.filter(item => item.id != tokenId);
+
+        if (this.nfts.length < oldCount) {
+          // tokenId has been deposited
+          this.depositedCount += 1;
+        }
       }
     });
     this.getNFTs();
@@ -132,6 +169,8 @@ export default {
     },
 
     async selectedNFTs() {
+      this.depositedCount = 0;
+
       const manaAddress = this.drizzleInstance.contracts.ManaBank.options
         .address;
 
@@ -158,3 +197,20 @@ export default {
   }
 };
 </script>
+
+<style>
+.get-mana .section {
+  margin-bottom: 26px;
+}
+.get-mana .card {
+  text-align: center;
+}
+.get-mana-button {
+  margin-bottom: 20px;
+}
+.get-mana .confirmation {
+  text-align: center;
+  font-weight: 600;
+  color: #b79afc;
+}
+</style>

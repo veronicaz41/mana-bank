@@ -1,7 +1,7 @@
 <template>
   <header class="header-global">
     <base-nav class="navbar-main" type="" effect="light" expand>
-      <router-link slot="brand" class="navbar-brand mr-lg-5" to="/">
+      <router-link slot="brand" class="navbar-brand mr-lg-3" to="/">
         <img src="../assets/logo.png" alt="Mana Bank" />
         <span>Mana Bank</span>
       </router-link>
@@ -108,12 +108,11 @@ export default {
 }
 .navbar-light .navbar-toggler {
   border-style: none !important;
-
-  .collapse-detail {
-    margin-top: 12px;
-  }
-  .collapse-brand-text {
-    margin-right: 0px;
-  }
+}
+.navbar .collapse-detail {
+  margin-top: 12px;
+}
+.navbar .collapse-brand-text {
+  margin-right: 0px;
 }
 </style>
