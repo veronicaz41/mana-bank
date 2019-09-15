@@ -54,7 +54,7 @@
         </b-col>
         <b-col lg="8" order-lg="1">
           <NFTSelector :nfts="nfts" />
-          <div v-if="!nfts.length" class="empty-state">
+          <div v-if="!nfts.length && !getNFTIsLoading" class="empty-state">
             There is no
             <a href="https://www.cheezewizards.com">CheezeWizards</a> or
             <a href="https://www.cryptokitties.co">CryptoKitties</a> in your
@@ -89,7 +89,8 @@ export default {
       depositedCount: 0,
       wizardApprovalIsLoading: false,
       kittyApprovalIsLoading: false,
-      getManaIsLoading: false
+      getManaIsLoading: false,
+      getNFTIsLoading: true
     };
   },
 
@@ -102,7 +103,8 @@ export default {
       return (
         this.wizardApprovalIsLoading ||
         this.kittyApprovalIsLoading ||
-        this.getManaIsLoading
+        this.getManaIsLoading ||
+        this.getNFTIsLoading
       );
     }
   },
@@ -155,15 +157,20 @@ export default {
 
     async getNFTs() {
       if (!this.isDrizzleInitialized) return;
+      this.getNFTIsLoading = true;
       const owner = this.activeAccount;
+      //const owner = "0xd13d7451b46f422e5e532e9bdf996a9a93b6058c";
       const wizards = await getWizards(owner, this.drizzleInstance);
       this.nfts.push(...wizards);
       const kitties = await getKitties(owner, this.drizzleInstance);
       this.nfts.push(...kitties);
+      this.getNFTIsLoading = false;
     }
   },
 
   mounted() {
+    this.getNFTs();
+
     this.depositedCount = 0;
     this.wizardApprovalIsLoading = false;
     this.kittyApprovalIsLoading = false;
@@ -192,7 +199,6 @@ export default {
         this.getManaIsLoading = false;
       }
     });
-    this.getNFTs();
   },
 
   watch: {
