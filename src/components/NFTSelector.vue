@@ -15,7 +15,7 @@
 import { mapActions } from "vuex";
 
 export default {
-  name: "NFTSelector",
+  name: "nft-selector",
 
   // NOTE: list of {'id', 'src', 'alt'}
   props: ["nfts"],

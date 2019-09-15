@@ -9,10 +9,9 @@
         >
           <div v-if="isDrizzleInitialized">
             <p>
-              You can burn XMN to 'summon' random CheezeWizards or
-              CryptoKitties.
+              You can burn XMN to 'summon' random CheezeWizards / CryptoKitties.
             </p>
-            <p>Each CheezeWizard and CryptoKitty costs 100 XMN.</p>
+            <p>Each CheezeWizard / CryptoKitty costs 100 XMN.</p>
             <card shadow class="get-collectible-form">
               <p>
                 Please enter number of CheezeWizards and CryptoKitties you want
@@ -46,14 +45,25 @@
             </card>
           </div>
         </b-col>
-        <b-col lg="8" order-lg="1" class="d-flex justify-content-center">
+        <b-col lg="8" order-lg="1" class="left-col">
+          <p>Distribution of CheezeWizards and CryptoKitties in Mana Bank</p>
           <!-- NOTE: If we do fungible power token, we'll want to change what we display here -->
           <apexchart
             width="400"
             type="pie"
             :options="pieChart.options"
             :series="pieChart.series"
+            class="d-flex justify-content-center"
           ></apexchart>
+          <div class="confirmation" v-if="newNFTs.length">
+            <p>The CheezeWards / CryptoKitties you summoned</p>
+            <ImagesCollection
+              :dataImages="this.newNFTs"
+              w="180px"
+              h="240px"
+              rootClass="vue-select-image"
+            ></ImagesCollection>
+          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -61,10 +71,15 @@
 </template>
 
 <script>
+import ImagesCollection from "@/components/ImagesCollection.vue";
 import { mapGetters } from "vuex";
 
 export default {
   name: "GetCollectibles",
+
+  components: {
+    ImagesCollection
+  },
 
   data() {
     return {
@@ -74,6 +89,7 @@ export default {
       manaBalanceKey: null,
 
       selectedNumber: null,
+      newNFTs: [],
 
       manaPerNFT: 100
     };
@@ -175,6 +191,8 @@ export default {
     },
 
     getCollectibles() {
+      this.newNFTs = [];
+
       this.drizzleInstance.contracts.ManaBank.methods.burnMana.cacheSend(
         this.selectedNumber * this.manaPerNFT,
         { from: this.activeAccount }
@@ -183,8 +201,48 @@ export default {
   },
 
   mounted() {
+    this.newNFTs = [];
+
     this.loadPieChartData();
     this.loadManaBalance();
+
+    this.$drizzleEvents.$on("drizzle/contractEvent", async payload => {
+      const { eventName, data } = payload;
+      if (eventName == "BurnMana") {
+        const { nftAddress, tokenId } = data;
+        const wizardAddress = this.drizzleInstance.contracts.WizardPresale
+          .address;
+        const kittyAddress = this.drizzleInstance.contracts.KittyCore.address;
+
+        if (nftAddress == wizardAddress) {
+          const found = this.newNFTs.find(
+            item => item.type == "wizard" && item.id == tokenId
+          );
+          if (found) return;
+          const wizard = {
+            id: tokenId,
+            src: `https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/${tokenId}.svg`,
+            alt: `CheezeWizard #${tokenId}`,
+            type: "wizard",
+            url: `https://opensea.io/assets/0x2f4bdafb22bd92aa7b7552d270376de8edccbc1e/${tokenId}`
+          };
+          this.newNFTs.push(wizard);
+        } else if (nftAddress == kittyAddress) {
+          const found = this.newNFTs.find(
+            item => item.type == "kitty" && item.id == tokenId
+          );
+          if (found) return;
+          const kitty = {
+            id: tokenId,
+            src: `https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/${tokenId}.svg`,
+            alt: `CryptoKitty #${tokenId}`,
+            type: "kitty",
+            url: `https://opensea.io/assets/0x06012c8cf97bead5deae237070f9587f8e7a266d/${tokenId}`
+          };
+          this.newNFTs.push(kitty);
+        }
+      }
+    });
   },
 
   watch: {
@@ -210,5 +268,17 @@ export default {
 }
 .get-collectibles .right-col {
   margin-bottom: 30px;
+}
+.get-collectibles .left-col p {
+  text-align: center;
+}
+.get-collectibles .confirmation {
+  margin: 40px;
+}
+.get-collectibles .vue-select-image {
+  margin-top: 30px;
+}
+.get-collectibles .vue-select-image__thumbnail {
+  cursor: inherit;
 }
 </style>
