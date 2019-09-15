@@ -13,7 +13,7 @@
       >
         <b-row>
           <div class="col-6 collapse-brand">
-            <img src="../assets/logo.png" alt="Mana Bank" />
+            <img src="../assets/logo.png" />
             <span class="navbar-brand collapse-brand-text">Mana Bank</span>
           </div>
           <div class="col-6 collapse-close">

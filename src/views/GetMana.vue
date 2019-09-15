@@ -43,7 +43,7 @@
                   class="get-mana-button"
                   >Get XMN</b-button
                 >
-                <p>Each exiled item = <b>100</b> XMN</p>
+                <p class="last">Each exiled item = <b>100</b> XMN</p>
               </card>
             </div>
             <div class="section confirmation" v-if="depositedCount">
@@ -201,6 +201,9 @@ export default {
 <style>
 .get-mana .section {
   margin-bottom: 26px;
+}
+.get-mana .section .last {
+  margin-bottom: 0px;
 }
 .get-mana .card {
   text-align: center;
