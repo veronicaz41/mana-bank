@@ -54,6 +54,11 @@
         </b-col>
         <b-col lg="8" order-lg="1">
           <NFTSelector :nfts="nfts" />
+          <div v-if="haveMore">
+            <b-button @click="loadMore" class="load-more-button"
+              >Load More</b-button
+            >
+          </div>
           <div v-if="!nfts.length && !getNFTIsLoading" class="empty-state">
             There is no
             <a href="https://www.cheezewizards.com">CheezeWizards</a> or
@@ -90,7 +95,10 @@ export default {
       wizardApprovalIsLoading: false,
       kittyApprovalIsLoading: false,
       getManaIsLoading: false,
-      getNFTIsLoading: true
+      getNFTIsLoading: true,
+
+      kittiesTotal: 0,
+      kittiesOffset: 0
     };
   },
 
@@ -106,6 +114,10 @@ export default {
         this.getManaIsLoading ||
         this.getNFTIsLoading
       );
+    },
+
+    haveMore() {
+      return this.kittiesTotal > 0 && this.kittiesOffset < this.kittiesTotal;
     }
   },
 
@@ -159,12 +171,24 @@ export default {
       if (!this.isDrizzleInitialized) return;
       this.getNFTIsLoading = true;
       const owner = this.activeAccount;
-      //const owner = "0xd13d7451b46f422e5e532e9bdf996a9a93b6058c";
+
       const wizards = await getWizards(owner, this.drizzleInstance);
       this.nfts.push(...wizards);
-      const kitties = await getKitties(owner, this.drizzleInstance);
+
+      const { kitties, total } = await getKitties(
+        owner,
+        this.drizzleInstance,
+        this.kittiesOffset
+      );
       this.nfts.push(...kitties);
+      this.kittiesTotal = total;
+      this.kittiesOffset += kitties.length;
+
       this.getNFTIsLoading = false;
+    },
+
+    loadMore() {
+      this.getNFTs();
     }
   },
 
@@ -256,5 +280,17 @@ export default {
 }
 .get-mana .empty-state {
   margin-left: 6px;
+}
+.get-mana .load-more-button {
+  width: 100%;
+  background-color: white;
+  color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-shadow: none;
+}
+.get-mana .load-more-button:hover {
+  transform: none;
+  color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 </style>

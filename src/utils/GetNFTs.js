@@ -49,7 +49,7 @@ export async function getWizards(owner, drizzle) {
   return nfts;
 }
 
-export async function getKitties(owner, drizzle) {
+export async function getKitties(owner, drizzle, offset = 0) {
   let nfts = [];
 
   if (process.env.NODE_ENV === "development") {
@@ -65,14 +65,18 @@ export async function getKitties(owner, drizzle) {
         });
       }
     }
-    return nfts;
+    return {
+      kitties: nfts,
+      total: nfts.length
+    };
   }
 
   let response = await axios.get(
     "https://public.api.cryptokitties.co/v1/kitties",
     {
       params: {
-        owner_wallet_address: owner
+        owner_wallet_address: owner,
+        offset: offset
       },
       headers: {
         "x-api-token": process.env.VUE_APP_KITTY_VERSE_API_TOKEN
@@ -80,7 +84,6 @@ export async function getKitties(owner, drizzle) {
     }
   );
   // response.data { "limit": 12, "offset": 0, "kitties": [], "total": 0 }
-  // TODO: need to do paging!!!
   const kitties = response.data.kitties || [];
   kitties.forEach(item => {
     let kitty = {
@@ -93,5 +96,8 @@ export async function getKitties(owner, drizzle) {
     nfts.push(kitty);
   });
 
-  return nfts;
+  return {
+    kitties: nfts,
+    total: response.data.total
+  };
 }
