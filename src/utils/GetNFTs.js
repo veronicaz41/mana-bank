@@ -65,7 +65,10 @@ export async function getKitties(owner, drizzle, offset = 0) {
         });
       }
     }
-    return nfts;
+    return {
+      kitties: nfts,
+      total: nfts.length
+    };
   }
 
   let response = await axios.get(
@@ -81,7 +84,6 @@ export async function getKitties(owner, drizzle, offset = 0) {
     }
   );
   // response.data { "limit": 12, "offset": 0, "kitties": [], "total": 0 }
-  console.log(response.data);
   const kitties = response.data.kitties || [];
   kitties.forEach(item => {
     let kitty = {
