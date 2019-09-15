@@ -114,11 +114,12 @@ export default {
 }
 .navbar-light .navbar-toggler {
   border-style: none !important;
-}
-.collapse-detail {
+
+  .collapse-detail {
   margin-top: 12px;
-}
-.collapse-brand-text {
+  }
+  .collapse-brand-text {
   margin-right: 0px;
+  }
 }
 </style>

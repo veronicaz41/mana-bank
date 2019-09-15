@@ -34,3 +34,15 @@ export default {
   }
 };
 </script>
+<style>
+.vue-select-image__item {
+  margin-bottom: 26px;
+}
+.vue-select-image__thumbnail {
+  cursor: pointer;
+  text-align: center;
+}
+.vue-select-image__thumbnail--selected {
+  background-color: #7FB79AFC;
+}
+</style>
