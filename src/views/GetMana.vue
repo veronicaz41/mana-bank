@@ -7,47 +7,36 @@
           <div v-if="isDrizzleInitialized">
             <div class="section">
               <b>XMN</b> is an ERC20 token that allows you to cash out your
-              spare CryptoKitties and CheezeWizards <em>quickly</em>. For more
+              spare CryptoKitties and CheezeWizards
+              <em>quickly</em>. For more
               about how XMN works, see
               <router-link to="/about">here</router-link>.
             </div>
             <div class="section" v-if="this.wizardsNeedApproval">
               <card shadow>
                 <p>Please approve us to manage your CheezeWizards</p>
-                <b-button variant="primary" @click="approveWizards"
-                  >Approve</b-button
-                >
+                <b-button variant="primary" @click="approveWizards">Approve</b-button>
               </card>
             </div>
             <div class="section" v-if="this.kittiesNeedApproval">
               <card shadow>
                 <p>Please approve us to manage your CryptoKitties</p>
-                <b-button variant="primary" @click="approveKitties"
-                  >Approve</b-button
-                >
+                <b-button variant="primary" @click="approveKitties">Approve</b-button>
               </card>
             </div>
             <div class="section">
-              <p>
-                XMN can be redeemed by 'exiling' CheezeWizards or CryptoKitties.
-              </p>
+              <p>XMN can be redeemed by 'exiling' CheezeWizards or CryptoKitties.</p>
               <card shadow>
-                <p>
-                  Please select CheezeWizards or CryptoKitties you want to exile
+                <p>Please select CheezeWizards or CryptoKitties you want to exile</p>
+                <b-button variant="primary" @click="getMana" class="get-mana-button">Get XMN</b-button>
+                <p class="last">
+                  Each exiled item =
+                  <b>100</b> XMN
                 </p>
-                <b-button
-                  variant="primary"
-                  @click="getMana"
-                  class="get-mana-button"
-                  >Get XMN</b-button
-                >
-                <p class="last">Each exiled item = <b>100</b> XMN</p>
               </card>
             </div>
             <div class="section confirmation" v-if="depositedCount">
-              <p>
-                {{ this.depositedCount }} CheezeWizards / CryptoKitties exiled
-              </p>
+              <p>{{ this.depositedCount }} CheezeWizards / CryptoKitties exiled</p>
               <p>You got {{ this.depositedCount * 100 }} XMN</p>
             </div>
           </div>
@@ -55,9 +44,7 @@
         <b-col lg="8" order-lg="1">
           <NFTSelector :nfts="nfts" />
           <div v-if="haveMore">
-            <b-button @click="loadMore" class="load-more-button"
-              >Load More</b-button
-            >
+            <b-button @click="loadMore" class="load-more-button">Load More</b-button>
           </div>
           <div v-if="!nfts.length && !getNFTIsLoading" class="empty-state">
             There is no
