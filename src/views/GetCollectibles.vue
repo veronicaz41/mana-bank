@@ -14,27 +14,42 @@
 
         <b-col md="4" class="d-flex justify-content-center">
           <div v-if="isDrizzleInitialized">
-            <p>You can burn XMN to get random wizards or kitties</p>
-            <p>Each wizard and kitty costs 100 XMN</p>
-            <b-form-input
-              id="mana-select"
-              v-model="selectedMana"
-              :state="validSelectedMana"
-              placeholder="Enter mana to deposit"
-              aria-describedby="input-live-feedback"
-              type="number"
-            ></b-form-input>
+            <p>
+              You can burn XMN to 'summon' random CheezeWizards or
+              CryptoKitties.
+            </p>
+            <p>Each CheezeWizard and CryptoKitty costs 100 XMN.</p>
+            <card shadow class="get-collectible-form">
+              <p>
+                Please enter number of CheezeWizards and CryptoKitties you want
+                to summon
+              </p>
+              <b-form-input
+                id="mana-select"
+                v-model="selectedNumber"
+                :state="validSelectedNumber"
+                placeholder="Enter a valid number"
+                aria-describedby="input-live-feedback"
+                type="number"
+                min="0"
+                :max="maxNumber"
+              ></b-form-input>
 
-            <b-form-invalid-feedback id="mana-select-feedback"
-              >Enter an amount of XMN you can afford</b-form-invalid-feedback
-            >
+              <b-form-invalid-feedback id="mana-select-feedback">{{
+                this.numberErrorMessage
+              }}</b-form-invalid-feedback>
 
-            <b-button
-              :disabled="!validSelectedMana"
-              variant="primary"
-              @click="getCollectibles"
-              >Get Collectibles</b-button
-            >
+              <p class="last" v-if="validSelectedNumber">
+                Will burn {{ this.selectedNumber * this.manaPerNFT }} XMN
+              </p>
+
+              <b-button
+                :disabled="!validSelectedNumber"
+                variant="primary"
+                @click="getCollectibles"
+                >Get Collectibles</b-button
+              >
+            </card>
           </div>
         </b-col>
       </b-row>
@@ -50,14 +65,14 @@ export default {
 
   data() {
     return {
-      addressKey: null,
-
       kittyCountKey: null,
       wizardCountKey: null,
 
       manaBalanceKey: null,
 
-      selectedMana: null
+      selectedNumber: null,
+
+      manaPerNFT: 100
     };
   },
 
@@ -66,10 +81,14 @@ export default {
     ...mapGetters("drizzle", ["isDrizzleInitialized", "drizzleInstance"]),
     ...mapGetters("accounts", ["activeAccount"]),
 
-    validSelectedMana() {
-      if (this.selectedMana == null) {
+    validSelectedNumber() {
+      if (this.selectedNumber == null || this.maxNumber == 0) {
         return null;
       }
+      return this.selectedNumber > 0 && this.selectedNumber <= this.maxNumber;
+    },
+
+    maxNumber() {
       if (
         this.manaBalanceKey != null &&
         this.manaBalanceKey in this.contractInstances.ManaBank.balanceOf
@@ -77,11 +96,16 @@ export default {
         const manaBalance = parseInt(
           this.contractInstances.ManaBank.balanceOf[this.manaBalanceKey].value
         );
-
-        return this.selectedMana >= 0 && this.selectedMana <= manaBalance;
-      } else {
-        return false;
+        return manaBalance / this.manaPerNFT;
       }
+      return 0;
+    },
+
+    numberErrorMessage() {
+      if (this.selectedNumber <= 0) {
+        return "Please enter a positive number";
+      }
+      return "You do not have enough XMN";
     },
 
     pieChart() {
@@ -154,7 +178,7 @@ export default {
 
     getCollectibles() {
       this.drizzleInstance.contracts.ManaBank.methods.burnMana.cacheSend(
-        this.selectedMana,
+        this.selectedNumber * this.manaPerNFT,
         { from: this.activeAccount }
       );
     }
@@ -173,3 +197,17 @@ export default {
   }
 };
 </script>
+
+<style>
+.get-collectible-form #mana-select {
+  margin-bottom: 16px;
+}
+.card {
+  text-align: center;
+}
+#mana-select-feedback {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 90%;
+}
+</style>

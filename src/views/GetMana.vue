@@ -202,10 +202,10 @@ export default {
 .get-mana .section {
   margin-bottom: 26px;
 }
-.get-mana .section .last {
+.last {
   margin-bottom: 0px;
 }
-.get-mana .card {
+.card {
   text-align: center;
 }
 .get-mana-button {
