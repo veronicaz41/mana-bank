@@ -30,8 +30,28 @@
               </card>
             </div>
             <div class="section">
-              <p>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</p>
-              <b-button variant="primary" @click="getMana">Get XMN</b-button>
+              <p>
+                XMN can be redeemed by 'exiling' CheezeWizards or CryptoKitties.
+              </p>
+              <card shadow>
+                <p>
+                  Please select CheezeWizards or CryptoKitties you want to exile
+                </p>
+                <b-button
+                  variant="primary"
+                  @click="getMana"
+                  class="get-mana-button"
+                  >Get XMN</b-button
+                >
+                <p>Each exiled item = <b>100</b> XMN</p>
+                <!-- <p>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</p> -->
+              </card>
+            </div>
+            <div class="section confirmation">
+              <p>
+                {{ this.selectedNFTs.length }} CheezeWizards / CryptoKitties
+                exiled
+              </p>
             </div>
           </div>
         </b-col>
@@ -174,5 +194,13 @@ export default {
 }
 .get-mana .card {
   text-align: center;
+}
+.get-mana-button {
+  margin-bottom: 20px;
+}
+.get-mana .confirmation {
+  text-align: center;
+  font-weight: 600;
+  color: #b79afc;
 }
 </style>
