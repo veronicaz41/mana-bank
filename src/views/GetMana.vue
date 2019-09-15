@@ -2,10 +2,7 @@
   <div class="get-mana">
     <b-container>
       <b-row>
-        <b-col lg="8">
-          <NFTSelector :nfts="nfts" />
-        </b-col>
-        <b-col lg="4">
+        <b-col lg="4" order-lg="2">
           <div v-if="isDrizzleInitialized">
             <div class="section">
               <b>XMN</b> is an ERC20 token that allows you to cash out your
@@ -43,7 +40,7 @@
                   class="get-mana-button"
                   >Get XMN</b-button
                 >
-                <p>Each exiled item = <b>100</b> XMN</p>
+                <p class="last">Each exiled item = <b>100</b> XMN</p>
               </card>
             </div>
             <div class="section confirmation" v-if="depositedCount">
@@ -53,6 +50,9 @@
               <p>You got {{ this.depositedCount * 100 }} XMN</p>
             </div>
           </div>
+        </b-col>
+        <b-col lg="8" order-lg="1">
+          <NFTSelector :nfts="nfts" />
         </b-col>
       </b-row>
     </b-container>
@@ -201,6 +201,9 @@ export default {
 <style>
 .get-mana .section {
   margin-bottom: 26px;
+}
+.get-mana .section .last {
+  margin-bottom: 0px;
 }
 .get-mana .card {
   text-align: center;

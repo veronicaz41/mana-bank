@@ -13,7 +13,7 @@
       >
         <b-row>
           <div class="col-6 collapse-brand">
-            <img src="../assets/logo.png" alt="Mana Bank" />
+            <img src="../assets/logo.png" />
             <span class="navbar-brand collapse-brand-text">Mana Bank</span>
           </div>
           <div class="col-6 collapse-close">
@@ -110,9 +110,15 @@ export default {
   border-style: none !important;
 }
 .navbar .collapse-detail {
-  margin-top: 12px;
+  margin-top: 18px;
 }
 .navbar .collapse-brand-text {
   margin-right: 0px;
+}
+.navbar-light .navbar-brand {
+  font-size: 1rem;
+  font-weight: 900;
+  color: #79d1e7 !important;
+  padding-top: 10px;
 }
 </style>
