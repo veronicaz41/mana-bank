@@ -1,18 +1,12 @@
 <template>
-  <div>
+  <div class="get-collectibles">
     <b-container>
       <b-row>
-        <b-col md="8" class="d-flex justify-content-center">
-          <!-- NOTE: If we do fungible power token, we'll want to change what we display here -->
-          <apexchart
-            width="350"
-            type="pie"
-            :options="pieChart.options"
-            :series="pieChart.series"
-          ></apexchart>
-        </b-col>
-
-        <b-col md="4" class="d-flex justify-content-center">
+        <b-col
+          lg="4"
+          order-lg="2"
+          class="d-flex justify-content-center right-col"
+        >
           <div v-if="isDrizzleInitialized">
             <p>
               You can burn XMN to 'summon' random CheezeWizards or
@@ -51,6 +45,15 @@
               >
             </card>
           </div>
+        </b-col>
+        <b-col lg="8" order-lg="1" class="d-flex justify-content-center">
+          <!-- NOTE: If we do fungible power token, we'll want to change what we display here -->
+          <apexchart
+            width="400"
+            type="pie"
+            :options="pieChart.options"
+            :series="pieChart.series"
+          ></apexchart>
         </b-col>
       </b-row>
     </b-container>
@@ -127,25 +130,20 @@ export default {
           return {
             series: [wizardCount, kittyCount],
             options: {
-              labels: ["Wizards", "Kitties"]
+              labels: ["CheezeWizards", "CryptoKitties"],
+              colors: ["#ffe133", "#e96bd4"]
             }
           };
         }
-
-        return {
-          series: [50, 50],
-          options: {
-            labels: ["Wizards", "Kitties"]
-          }
-        };
-      } else {
-        return {
-          series: [50, 50],
-          options: {
-            labels: ["Wizards", "Kitties"]
-          }
-        };
       }
+
+      return {
+        series: [50, 50],
+        options: {
+          labels: ["CheezeWizards", "CryptoKitties"],
+          colors: ["#ffe133", "#e96bd4"]
+        }
+      };
     }
   },
 
@@ -209,5 +207,8 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 90%;
+}
+.get-collectibles .right-col {
+  margin-bottom: 30px;
 }
 </style>
