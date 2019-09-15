@@ -16,18 +16,22 @@
             <div class="section" v-if="this.wizardsNeedApproval">
               <card shadow>
                 <p>Please approve us to manage your CheezeWizards</p>
-                <b-button @click="approveWizards">Approve</b-button>
+                <b-button variant="primary" @click="approveWizards"
+                  >Approve</b-button
+                >
               </card>
             </div>
             <div class="section" v-if="this.kittiesNeedApproval">
               <card shadow>
                 <p>Please approve us to manage your CryptoKitties</p>
-                <b-button @click="approveKitties">Approve</b-button>
+                <b-button variant="primary" @click="approveKitties"
+                  >Approve</b-button
+                >
               </card>
             </div>
             <div class="section">
               <p>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</p>
-              <b-button @click="getMana">Get XMN</b-button>
+              <b-button variant="primary" @click="getMana">Get XMN</b-button>
             </div>
           </div>
         </b-col>
