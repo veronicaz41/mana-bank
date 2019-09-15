@@ -1,40 +1,68 @@
 <template>
-  <div>
+  <div class="get-collectibles">
     <b-container>
       <b-row>
-        <b-col md="8">
+        <b-col
+          lg="4"
+          order-lg="2"
+          class="d-flex justify-content-center right-col"
+        >
+          <div v-if="isDrizzleInitialized">
+            <p>
+              You can burn XMN to 'summon' random CheezeWizards / CryptoKitties.
+            </p>
+            <p>Each CheezeWizard / CryptoKitty costs 100 XMN.</p>
+            <card shadow class="get-collectible-form">
+              <p>
+                Please enter number of CheezeWizards and CryptoKitties you want
+                to summon
+              </p>
+              <b-form-input
+                id="mana-select"
+                v-model="selectedNumber"
+                :state="validSelectedNumber"
+                placeholder="Enter a valid number"
+                aria-describedby="input-live-feedback"
+                type="number"
+                min="0"
+                :max="maxNumber"
+              ></b-form-input>
+
+              <b-form-invalid-feedback id="mana-select-feedback">{{
+                this.numberErrorMessage
+              }}</b-form-invalid-feedback>
+
+              <p class="last" v-if="validSelectedNumber">
+                Will burn {{ this.selectedNumber * this.manaPerNFT }} XMN
+              </p>
+
+              <b-button
+                :disabled="!validSelectedNumber"
+                variant="primary"
+                @click="getCollectibles"
+                >Get Collectibles</b-button
+              >
+            </card>
+          </div>
+        </b-col>
+        <b-col lg="8" order-lg="1" class="left-col">
+          <p>Distribution of CheezeWizards and CryptoKitties in Mana Bank</p>
           <!-- NOTE: If we do fungible power token, we'll want to change what we display here -->
           <apexchart
-            width="350"
+            width="400"
             type="pie"
             :options="pieChart.options"
             :series="pieChart.series"
+            class="d-flex justify-content-center"
           ></apexchart>
-        </b-col>
-
-        <b-col md="4">
-          <div v-if="isDrizzleInitialized">
-            <p>You can burn XMN to get random wizards or kitties</p>
-            <p>Each wizard and kitty costs 100 XMN</p>
-            <b-form-input
-              id="mana-select"
-              v-model="selectedMana"
-              :state="validSelectedMana"
-              placeholder="Enter mana to deposit"
-              aria-describedby="input-live-feedback"
-              type="number"
-            ></b-form-input>
-
-            <b-form-invalid-feedback id="mana-select-feedback"
-              >Enter an amount of XMN you can afford</b-form-invalid-feedback
-            >
-
-            <b-button
-              :disabled="!validSelectedMana"
-              variant="primary"
-              @click="getCollectibles"
-              >Get Collectibles</b-button
-            >
+          <div class="confirmation" v-if="newNFTs.length">
+            <p>The CheezeWards / CryptoKitties you summoned</p>
+            <ImagesCollection
+              :dataImages="this.newNFTs"
+              w="180px"
+              h="240px"
+              rootClass="vue-select-image"
+            ></ImagesCollection>
           </div>
         </b-col>
       </b-row>
@@ -43,21 +71,27 @@
 </template>
 
 <script>
+import ImagesCollection from "@/components/ImagesCollection.vue";
 import { mapGetters } from "vuex";
 
 export default {
   name: "GetCollectibles",
 
+  components: {
+    ImagesCollection
+  },
+
   data() {
     return {
-      addressKey: null,
-
       kittyCountKey: null,
       wizardCountKey: null,
 
       manaBalanceKey: null,
 
-      selectedMana: null
+      selectedNumber: null,
+      newNFTs: [],
+
+      manaPerNFT: 100
     };
   },
 
@@ -66,10 +100,14 @@ export default {
     ...mapGetters("drizzle", ["isDrizzleInitialized", "drizzleInstance"]),
     ...mapGetters("accounts", ["activeAccount"]),
 
-    validSelectedMana() {
-      if (this.selectedMana == null) {
+    validSelectedNumber() {
+      if (this.selectedNumber == null || this.maxNumber == 0) {
         return null;
       }
+      return this.selectedNumber > 0 && this.selectedNumber <= this.maxNumber;
+    },
+
+    maxNumber() {
       if (
         this.manaBalanceKey != null &&
         this.manaBalanceKey in this.contractInstances.ManaBank.balanceOf
@@ -77,11 +115,16 @@ export default {
         const manaBalance = parseInt(
           this.contractInstances.ManaBank.balanceOf[this.manaBalanceKey].value
         );
-
-        return this.selectedMana >= 0 && this.selectedMana <= manaBalance;
-      } else {
-        return false;
+        return manaBalance / this.manaPerNFT;
       }
+      return 0;
+    },
+
+    numberErrorMessage() {
+      if (this.selectedNumber <= 0) {
+        return "Please enter a positive number";
+      }
+      return "You do not have enough XMN";
     },
 
     pieChart() {
@@ -103,25 +146,20 @@ export default {
           return {
             series: [wizardCount, kittyCount],
             options: {
-              labels: ["Wizards", "Kitties"]
+              labels: ["CheezeWizards", "CryptoKitties"],
+              colors: ["#ffe133", "#e96bd4"]
             }
           };
         }
-
-        return {
-          series: [50, 50],
-          options: {
-            labels: ["Wizards", "Kitties"]
-          }
-        };
-      } else {
-        return {
-          series: [50, 50],
-          options: {
-            labels: ["Wizards", "Kitties"]
-          }
-        };
       }
+
+      return {
+        series: [50, 50],
+        options: {
+          labels: ["CheezeWizards", "CryptoKitties"],
+          colors: ["#ffe133", "#e96bd4"]
+        }
+      };
     }
   },
 
@@ -153,16 +191,58 @@ export default {
     },
 
     getCollectibles() {
+      this.newNFTs = [];
+
       this.drizzleInstance.contracts.ManaBank.methods.burnMana.cacheSend(
-        this.selectedMana,
+        this.selectedNumber * this.manaPerNFT,
         { from: this.activeAccount }
       );
     }
   },
 
   mounted() {
+    this.newNFTs = [];
+
     this.loadPieChartData();
     this.loadManaBalance();
+
+    this.$drizzleEvents.$on("drizzle/contractEvent", async payload => {
+      const { eventName, data } = payload;
+      if (eventName == "BurnMana") {
+        const { nftAddress, tokenId } = data;
+        const wizardAddress = this.drizzleInstance.contracts.WizardPresale
+          .address;
+        const kittyAddress = this.drizzleInstance.contracts.KittyCore.address;
+
+        if (nftAddress == wizardAddress) {
+          const found = this.newNFTs.find(
+            item => item.type == "wizard" && item.id == tokenId
+          );
+          if (found) return;
+          const wizard = {
+            id: tokenId,
+            src: `https://storage.googleapis.com/cheeze-wizards-production/0xec2203e38116f09e21bc27443e063b623b01345a/${tokenId}.svg`,
+            alt: `CheezeWizard #${tokenId}`,
+            type: "wizard",
+            url: `https://opensea.io/assets/0x2f4bdafb22bd92aa7b7552d270376de8edccbc1e/${tokenId}`
+          };
+          this.newNFTs.push(wizard);
+        } else if (nftAddress == kittyAddress) {
+          const found = this.newNFTs.find(
+            item => item.type == "kitty" && item.id == tokenId
+          );
+          if (found) return;
+          const kitty = {
+            id: tokenId,
+            src: `https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/${tokenId}.svg`,
+            alt: `CryptoKitty #${tokenId}`,
+            type: "kitty",
+            url: `https://opensea.io/assets/0x06012c8cf97bead5deae237070f9587f8e7a266d/${tokenId}`
+          };
+          this.newNFTs.push(kitty);
+        }
+      }
+    });
   },
 
   watch: {
@@ -173,3 +253,32 @@ export default {
   }
 };
 </script>
+
+<style>
+.get-collectible-form #mana-select {
+  margin-bottom: 16px;
+}
+.card {
+  text-align: center;
+}
+#mana-select-feedback {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 90%;
+}
+.get-collectibles .right-col {
+  margin-bottom: 30px;
+}
+.get-collectibles .left-col p {
+  text-align: center;
+}
+.get-collectibles .confirmation {
+  margin: 40px;
+}
+.get-collectibles .vue-select-image {
+  margin-top: 30px;
+}
+.get-collectibles .vue-select-image__thumbnail {
+  cursor: inherit;
+}
+</style>

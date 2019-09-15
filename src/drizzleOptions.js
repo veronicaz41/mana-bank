@@ -56,7 +56,7 @@ const options = {
   events: {
     WizardPresale: ["ApprovalForAll"],
     KittyCore: ["ApprovalForAll"],
-    ManaBank: ["GetMana"]
+    ManaBank: ["GetMana", "BurnMana"]
   },
   polls: {
     // check accounts ever 15 seconds
