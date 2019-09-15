@@ -90,7 +90,10 @@ export default {
       wizardApprovalIsLoading: false,
       kittyApprovalIsLoading: false,
       getManaIsLoading: false,
-      getNFTIsLoading: true
+      getNFTIsLoading: true,
+
+      kittiesTotal: 0,
+      kittiesOffset: 0
     };
   },
 
@@ -158,12 +161,17 @@ export default {
     async getNFTs() {
       if (!this.isDrizzleInitialized) return;
       this.getNFTIsLoading = true;
-      const owner = this.activeAccount;
-      //const owner = "0xd13d7451b46f422e5e532e9bdf996a9a93b6058c";
+      //const owner = this.activeAccount;
+      const owner = "0xd13d7451b46f422e5e532e9bdf996a9a93b6058c";
       const wizards = await getWizards(owner, this.drizzleInstance);
       this.nfts.push(...wizards);
-      const kitties = await getKitties(owner, this.drizzleInstance);
+
+      const { kitties, total } = await getKitties(owner, this.drizzleInstance);
       this.nfts.push(...kitties);
+      this.kittiesTotal = total;
+      this.kittiesOffset += kitties.length;
+      console.log(this.kittiesTotal);
+      console.log(this.kittiesOffset);
       this.getNFTIsLoading = false;
     }
   },
