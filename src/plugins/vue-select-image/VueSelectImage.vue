@@ -18,10 +18,6 @@
             :width="w"
             :class="rootClass + '__img'"
           />
-
-          <label v-if="useLabel" :class="rootClass + '__lbl'">
-            {{ dataImage.alt }}
-          </label>
         </div>
 
         <div
@@ -36,10 +32,12 @@
             :width="w"
             :class="rootClass + '__img'"
           />
+        </div>
 
-          <label v-if="useLabel" :class="rootClass + '__lbl'">
-            {{ dataImage.alt }}
-          </label>
+        <div v-if="useLabel" :class="rootClass + '__lbl'">
+          <a :href="dataImage.url" target="_blank">
+            <p class="label">{{ dataImage.alt }}</p>
+          </a>
         </div>
       </li>
     </ul>

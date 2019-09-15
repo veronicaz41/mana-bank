@@ -3,6 +3,7 @@
     <vue-select-image
       :dataImages="this.nfts"
       :is-multiple="true"
+      :use-label="true"
       w="180px"
       h="240px"
       @onselectmultipleimage="onSelectNFTs"
@@ -30,13 +31,22 @@ export default {
 </script>
 <style>
 .vue-select-image__item {
-  margin-bottom: 26px;
+  margin-bottom: 24px;
 }
 .vue-select-image__thumbnail {
   cursor: pointer;
-  text-align: center;
 }
 .vue-select-image__thumbnail--selected {
-  background-color: #7fb79afc;
+  background-color: #b79afc;
+}
+.vue-select-image__lbl {
+  text-align: center;
+}
+.vue-select-image__lbl .label {
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
 }
 </style>
