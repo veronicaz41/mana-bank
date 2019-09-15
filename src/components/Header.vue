@@ -109,6 +109,9 @@ export default {
 </script>
 
 <style>
+.navbar {
+  padding: 1rem 0 1.5rem 0 !important;
+}
 .navbar-light .navbar-toggler {
   border-style: none !important;
 }
