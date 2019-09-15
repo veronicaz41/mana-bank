@@ -55,7 +55,7 @@ const options = {
   contracts: contracts,
   events: {
     WizardPresale: ["ApprovalForAll"],
-    KittyCore: ["ApprovalForAll"],
+    KittyCore: ["Approval"],
     ManaBank: ["GetMana", "BurnMana"]
   },
   polls: {
