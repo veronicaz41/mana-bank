@@ -170,8 +170,7 @@ export default {
     async getNFTs() {
       if (!this.isDrizzleInitialized) return;
       this.getNFTIsLoading = true;
-      //const owner = this.activeAccount;
-      const owner = "0xd13d7451b46f422e5e532e9bdf996a9a93b6058c";
+      const owner = this.activeAccount;
 
       const wizards = await getWizards(owner, this.drizzleInstance);
       this.nfts.push(...wizards);
