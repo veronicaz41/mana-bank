@@ -44,14 +44,13 @@
                   >Get XMN</b-button
                 >
                 <p>Each exiled item = <b>100</b> XMN</p>
-                <!-- <p>Deposit {{ this.selectedNFTs.length }} Wizards/Kitties</p> -->
               </card>
             </div>
-            <div class="section confirmation">
+            <div class="section confirmation" v-if="depositedCount">
               <p>
-                {{ this.selectedNFTs.length }} CheezeWizards / CryptoKitties
-                exiled
+                {{ this.depositedCount }} CheezeWizards / CryptoKitties exiled
               </p>
+              <p>You got {{ this.depositedCount * 100 }} XMN</p>
             </div>
           </div>
         </b-col>
@@ -75,7 +74,8 @@ export default {
     return {
       nfts: [],
       wizardsNeedApproval: false,
-      kittiesNeedApproval: false
+      kittiesNeedApproval: false,
+      depositedCount: 0
     };
   },
 
@@ -138,6 +138,8 @@ export default {
   },
 
   mounted() {
+    this.depositedCount = 0;
+
     this.$drizzleEvents.$on("drizzle/contractEvent", async payload => {
       const { contractName, eventName, data } = payload;
       if (eventName == "ApprovalForAll") {
@@ -149,7 +151,13 @@ export default {
         }
       } else if (eventName == "GetMana") {
         const tokenId = data.tokenId;
+        const oldCount = this.nfts.length;
         this.nfts = this.nfts.filter(item => item.id != tokenId);
+
+        if (this.nfts.length < oldCount) {
+          // tokenId has been deposited
+          this.depositedCount += 1;
+        }
       }
     });
     this.getNFTs();
@@ -161,6 +169,8 @@ export default {
     },
 
     async selectedNFTs() {
+      this.depositedCount = 0;
+
       const manaAddress = this.drizzleInstance.contracts.ManaBank.options
         .address;
 
