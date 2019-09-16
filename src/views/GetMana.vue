@@ -18,17 +18,27 @@
                 <b-button variant="primary" @click="approveWizards">Approve</b-button>
               </card>
             </div>
-            <div class="section" v-if="this.kittiesNeedApproval">
-              <card shadow>
-                <p>Please approve us to manage your CryptoKitties</p>
-                <b-button variant="primary" @click="approveKitties">Approve</b-button>
-              </card>
+            <div class="section" v-if="selectedKitties.length">
+              <div v-for="(kitty, index) in selectedKitties" :key="index">
+                <card shadow class="kitty-approval-card">
+                  <p>
+                    Please approve us to manage
+                    <a :href="kitty.url" target="_blank">{{ kitty.alt }}</a>
+                  </p>
+                  <b-button variant="primary" @click="approveKitty(kitty.id)">Approve</b-button>
+                </card>
+              </div>
             </div>
             <div class="section">
               <p>XMN can be redeemed by 'exiling' CheezeWizards or CryptoKitties.</p>
               <card shadow>
                 <p>Please select CheezeWizards or CryptoKitties you want to exile</p>
-                <b-button variant="primary" @click="getMana" class="get-mana-button">Get XMN</b-button>
+                <b-button
+                  variant="primary"
+                  @click="getMana"
+                  class="get-mana-button"
+                  :disabled="needsApproval"
+                >Get XMN</b-button>
                 <p class="last">
                   Each exiled item =
                   <b>100</b> XMN
@@ -76,8 +86,9 @@ export default {
   data() {
     return {
       nfts: [],
+      selectedKitties: [],
+
       wizardsNeedApproval: false,
-      kittiesNeedApproval: false,
       depositedCount: 0,
       wizardApprovalIsLoading: false,
       kittyApprovalIsLoading: false,
@@ -103,6 +114,10 @@ export default {
       );
     },
 
+    needsApproval() {
+      return this.wizardsNeedApproval || this.selectedKitties.length > 0;
+    },
+
     haveMore() {
       return this.kittiesTotal > 0 && this.kittiesOffset < this.kittiesTotal;
     }
@@ -118,10 +133,10 @@ export default {
       this.wizardApprovalIsLoading = true;
     },
 
-    approveKitties() {
-      this.drizzleInstance.contracts.KittyCore.methods.setApprovalForAll.cacheSend(
+    approveKitty(tokenId) {
+      this.drizzleInstance.contracts.KittyCore.methods.approve.cacheSend(
         this.drizzleInstance.contracts.ManaBank.options.address,
-        true,
+        tokenId,
         { from: this.activeAccount }
       );
       this.kittyApprovalIsLoading = true;
@@ -194,8 +209,13 @@ export default {
         if (contractName == "WizardPresale") {
           this.wizardsNeedApproval = false;
           this.wizardApprovalIsLoading = false;
-        } else if (contractName == "KittyCore") {
-          this.kittiesNeedApproval = false;
+        }
+      } else if (eventName == "Approval") {
+        const idx = this.selectedKitties.findIndex(
+          item => item.id == data.tokenId
+        );
+        if (idx >= 0) {
+          this.selectedKitties.splice(idx, 1);
           this.kittyApprovalIsLoading = false;
         }
       } else if (eventName == "GetMana") {
@@ -210,6 +230,22 @@ export default {
         this.getManaIsLoading = false;
       }
     });
+
+    // TODO: I seriously do not know how to handle MetaMask user reject.
+    // there's no doc whatsoever, this is super hacky, but anyway.
+    // I blame Drizzle.
+    var _error = console.error;
+    console.error = function() {
+      if (arguments.length > 0) {
+        const e = String(arguments[0]);
+        if (e.includes("Error: Internal JSON-RPC error.")) {
+          this.kittyApprovalIsLoading = false;
+          this.wizardApprovalIsLoading = false;
+          this.getManaIsLoading = false;
+        }
+      }
+      return _error.apply(console, arguments);
+    }.bind(this);
   },
 
   watch: {
@@ -219,29 +255,34 @@ export default {
 
     async selectedNFTs() {
       this.depositedCount = 0;
+      this.wizardsNeedApproval = false;
+      this.selectedKitties = [];
 
       const manaAddress = this.drizzleInstance.contracts.ManaBank.options
         .address;
 
-      let found = this.selectedNFTs.find(item => item.type == "wizard");
-      if (found) {
-        const isWizardsApproved = await this.drizzleInstance.contracts.WizardPresale.methods
-          .isApprovedForAll(this.activeAccount, manaAddress)
-          .call();
-        this.wizardsNeedApproval = !isWizardsApproved;
-      } else {
-        this.wizardsNeedApproval = false;
-      }
-
-      found = this.selectedNFTs.find(item => item.type == "kitty");
-      if (found) {
-        const isKittiesApproved = await this.drizzleInstance.contracts.KittyCore.methods
-          .isApprovedForAll(this.activeAccount, manaAddress)
-          .call();
-        this.kittiesNeedApproval = !isKittiesApproved;
-      } else {
-        this.kittiesNeedApproval = false;
-      }
+      let seenWizard = false;
+      this.selectedNFTs.forEach(async item => {
+        if (item.type == "wizard" && !seenWizard) {
+          seenWizard = true;
+          const isWizardsApproved = await this.drizzleInstance.contracts.WizardPresale.methods
+            .isApprovedForAll(this.activeAccount, manaAddress)
+            .call();
+          this.wizardsNeedApproval = !isWizardsApproved;
+        } else if (item.type == "kitty") {
+          const approvedAddress = await this.drizzleInstance.contracts.KittyCore.methods
+            .kittyIndexToApproved(item.id)
+            .call();
+          if (approvedAddress != manaAddress) {
+            const found = this.selectedKitties.find(
+              kitty => kitty.id == item.id
+            );
+            if (!found) {
+              this.selectedKitties.push(item);
+            }
+          }
+        }
+      });
     }
   }
 };
@@ -279,5 +320,8 @@ export default {
   transform: none;
   color: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.5);
+}
+.get-mana .kitty-approval-card {
+  margin-bottom: 12px;
 }
 </style>
