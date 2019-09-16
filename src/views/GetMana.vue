@@ -33,7 +33,12 @@
               <p>XMN can be redeemed by 'exiling' CheezeWizards or CryptoKitties.</p>
               <card shadow>
                 <p>Please select CheezeWizards or CryptoKitties you want to exile</p>
-                <b-button variant="primary" @click="getMana" class="get-mana-button">Get XMN</b-button>
+                <b-button
+                  variant="primary"
+                  @click="getMana"
+                  class="get-mana-button"
+                  :disabled="needsApproval"
+                >Get XMN</b-button>
                 <p class="last">
                   Each exiled item =
                   <b>100</b> XMN
@@ -107,6 +112,10 @@ export default {
         this.getManaIsLoading ||
         this.getNFTIsLoading
       );
+    },
+
+    needsApproval() {
+      return this.wizardsNeedApproval || this.selectedKitties.length > 0;
     },
 
     haveMore() {
@@ -222,6 +231,9 @@ export default {
       }
     });
 
+    // TODO: I seriously do not know how to handle MetaMask user reject.
+    // there's no doc whatsoever, this is super hacky, but anyway.
+    // I blame Drizzle.
     var _error = console.error;
     console.error = function() {
       if (arguments.length > 0) {

@@ -250,7 +250,8 @@ export default {
     });
 
     // TODO: I seriously do not know how to handle MetaMask user reject.
-    // there's no doc whatsoever, this is super hacky, but anyway
+    // there's no doc whatsoever, this is super hacky, but anyway.
+    // I blame Drizzle.
     var _error = console.error;
     console.error = function() {
       if (arguments.length > 0) {
