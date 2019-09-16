@@ -29,9 +29,9 @@
                 :max="maxNumber"
               ></b-form-input>
 
-              <b-form-invalid-feedback id="mana-select-feedback">
-                {{ this.numberErrorMessage }}
-              </b-form-invalid-feedback>
+              <b-form-invalid-feedback id="mana-select-feedback">{{
+                this.numberErrorMessage
+              }}</b-form-invalid-feedback>
 
               <p class="last" v-if="validSelectedNumber">
                 Will burn {{ this.selectedNumber * this.manaPerNFT }} XMN
@@ -134,6 +134,9 @@ export default {
     },
 
     pieChart() {
+      let kittyCount = 0;
+      let wizardCount = 0;
+
       if (this.wizardCountKey !== null && this.kittyCountKey !== null) {
         const tokenAddressToCountMap = this.contractInstances.ManaBank
           .tokenAddressToCount;
@@ -142,25 +145,28 @@ export default {
           this.kittyCountKey in tokenAddressToCountMap &&
           this.wizardCountKey in tokenAddressToCountMap
         ) {
-          const kittyCount = parseInt(
+          kittyCount = parseInt(
             tokenAddressToCountMap[this.kittyCountKey].value
           );
-          const wizardCount = parseInt(
+          wizardCount = parseInt(
             tokenAddressToCountMap[this.wizardCountKey].value
           );
-
-          return {
-            series: [wizardCount, kittyCount],
-            options: {
-              labels: ["CheezeWizards", "CryptoKitties"],
-              colors: ["#ffe133", "#e96bd4"]
-            }
-          };
         }
       }
 
+      if (kittyCount > 0 || wizardCount > 0) {
+        return {
+          series: [wizardCount, kittyCount],
+          options: {
+            labels: ["CheezeWizards", "CryptoKitties"],
+            colors: ["#ffe133", "#e96bd4"]
+          }
+        };
+      }
+
+      // TODO: let's at least show the chart initially
       return {
-        series: [50, 50],
+        series: [1, 1],
         options: {
           labels: ["CheezeWizards", "CryptoKitties"],
           colors: ["#ffe133", "#e96bd4"]
