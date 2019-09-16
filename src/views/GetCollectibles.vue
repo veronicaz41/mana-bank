@@ -3,9 +3,15 @@
     <Loading :active.sync="isLoading" loader="dots" is-full-page></Loading>
     <b-container>
       <b-row>
-        <b-col lg="4" order-lg="2" class="d-flex justify-content-center right-col">
+        <b-col
+          lg="4"
+          order-lg="2"
+          class="d-flex justify-content-center right-col"
+        >
           <div v-if="isDrizzleInitialized">
-            <p>You can burn XMN to 'summon' random CheezeWizards / CryptoKitties.</p>
+            <p>
+              You can burn XMN to 'summon' random CheezeWizards / CryptoKitties.
+            </p>
             <p>Each CheezeWizard / CryptoKitty costs 100 XMN.</p>
             <card shadow class="get-collectible-form">
               <p>
@@ -24,21 +30,19 @@
               ></b-form-input>
 
               <b-form-invalid-feedback id="mana-select-feedback">
-                {{
-                this.numberErrorMessage
-                }}
+                {{ this.numberErrorMessage }}
               </b-form-invalid-feedback>
 
-              <p
-                class="last"
-                v-if="validSelectedNumber"
-              >Will burn {{ this.selectedNumber * this.manaPerNFT }} XMN</p>
+              <p class="last" v-if="validSelectedNumber">
+                Will burn {{ this.selectedNumber * this.manaPerNFT }} XMN
+              </p>
 
               <b-button
                 :disabled="!validSelectedNumber"
                 variant="primary"
                 @click="getCollectibles"
-              >Get Collectibles</b-button>
+                >Get Collectibles</b-button
+              >
             </card>
           </div>
         </b-col>
@@ -252,6 +256,7 @@ export default {
     // TODO: I seriously do not know how to handle MetaMask user reject.
     // there's no doc whatsoever, this is super hacky, but anyway.
     // I blame Drizzle.
+    /* eslint-enable no-console */
     var _error = console.error;
     console.error = function() {
       if (arguments.length > 0) {
@@ -262,6 +267,7 @@ export default {
       }
       return _error.apply(console, arguments);
     }.bind(this);
+    /* eslint-enable no-console */
   },
 
   watch: {

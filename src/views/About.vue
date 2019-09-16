@@ -14,9 +14,9 @@
             <a href="https://github.com/veronicaz41">Veronica Zheng</a> and
             <a href="https://www.lakshmansankar.com/">Lakshman Sankar</a> for
             the
-            <a
-              href="https://coinlist.co/build/cheezewizards"
-            >CheezeWizards+CoinList hackathon</a>.
+            <a href="https://coinlist.co/build/cheezewizards"
+              >CheezeWizards+CoinList hackathon</a
+            >.
           </p>
 
           <h4>How</h4>
@@ -25,9 +25,12 @@
             be redeemed by 'exiling' Kitties or Wizards. Exiling a wizard or
             kitty puts it in direct custody of the XMN contract, but grants you
             a fixed amount (currently 10) of XMN for each exiled item.
-          </p>XMN can be:
+          </p>
+          XMN can be:
           <ol>
-            <li>used to 'summon' a random kitty or wizard held by the XMN contract</li>
+            <li>
+              used to 'summon' a random kitty or wizard held by the XMN contract
+            </li>
             <li>
               traded anywhere you can trade ERC20s. We're starting the XMN
               economy by seeding an ETH/XMN Uniswap pool
@@ -37,9 +40,7 @@
           <!-- TODO: Add link for mainnet deploy! -->
           <p>
             The ManaBank contract is currently deployed on mainnet
-            <a
-              href="https://etherscan.io"
-            >here</a>
+            <a href="https://etherscan.io">here</a>
           </p>
 
           <h4>Why</h4>
@@ -53,10 +54,10 @@
           <p>
             We think that the XMN token is a step towards bridging that gap by
             giving NFT owners something fungible
-            <em>immediately</em> for their
-            tokens. And because XMN is immediately redeemable for a random
-            Wizard or Kitty that's been deposited in the contract, it's always
-            guarantee to have a floor market value.
+            <em>immediately</em> for their tokens. And because XMN is
+            immediately redeemable for a random Wizard or Kitty that's been
+            deposited in the contract, it's always guarantee to have a floor
+            market value.
           </p>
         </b-col>
       </b-row>

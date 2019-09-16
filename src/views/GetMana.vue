@@ -7,15 +7,16 @@
           <div v-if="isDrizzleInitialized">
             <div class="section">
               <b>XMN</b> is an ERC20 token that allows you to cash out your
-              spare CryptoKitties and CheezeWizards
-              <em>quickly</em>. For more
+              spare CryptoKitties and CheezeWizards <em>quickly</em>. For more
               about how XMN works, see
               <router-link to="/about">here</router-link>.
             </div>
             <div class="section" v-if="this.wizardsNeedApproval">
               <card shadow>
                 <p>Please approve us to manage your CheezeWizards</p>
-                <b-button variant="primary" @click="approveWizards">Approve</b-button>
+                <b-button variant="primary" @click="approveWizards"
+                  >Approve</b-button
+                >
               </card>
             </div>
             <div class="section" v-if="selectedKitties.length">
@@ -25,20 +26,27 @@
                     Please approve us to manage
                     <a :href="kitty.url" target="_blank">{{ kitty.alt }}</a>
                   </p>
-                  <b-button variant="primary" @click="approveKitty(kitty.id)">Approve</b-button>
+                  <b-button variant="primary" @click="approveKitty(kitty.id)"
+                    >Approve</b-button
+                  >
                 </card>
               </div>
             </div>
             <div class="section">
-              <p>XMN can be redeemed by 'exiling' CheezeWizards or CryptoKitties.</p>
+              <p>
+                XMN can be redeemed by 'exiling' CheezeWizards or CryptoKitties.
+              </p>
               <card shadow>
-                <p>Please select CheezeWizards or CryptoKitties you want to exile</p>
+                <p>
+                  Please select CheezeWizards or CryptoKitties you want to exile
+                </p>
                 <b-button
                   variant="primary"
                   @click="getMana"
                   class="get-mana-button"
                   :disabled="needsApproval"
-                >Get XMN</b-button>
+                  >Get XMN</b-button
+                >
                 <p class="last">
                   Each exiled item =
                   <b>100</b> XMN
@@ -46,7 +54,9 @@
               </card>
             </div>
             <div class="section confirmation" v-if="depositedCount">
-              <p>{{ this.depositedCount }} CheezeWizards / CryptoKitties exiled</p>
+              <p>
+                {{ this.depositedCount }} CheezeWizards / CryptoKitties exiled
+              </p>
               <p>You got {{ this.depositedCount * 100 }} XMN</p>
             </div>
           </div>
@@ -54,7 +64,9 @@
         <b-col lg="8" order-lg="1">
           <NFTSelector :nfts="nfts" />
           <div v-if="haveMore">
-            <b-button @click="loadMore" class="load-more-button">Load More</b-button>
+            <b-button @click="loadMore" class="load-more-button"
+              >Load More</b-button
+            >
           </div>
           <div v-if="!nfts.length && !getNFTIsLoading" class="empty-state">
             There is no
@@ -234,6 +246,7 @@ export default {
     // TODO: I seriously do not know how to handle MetaMask user reject.
     // there's no doc whatsoever, this is super hacky, but anyway.
     // I blame Drizzle.
+    /* eslint-disable no-console */
     var _error = console.error;
     console.error = function() {
       if (arguments.length > 0) {
@@ -246,6 +259,7 @@ export default {
       }
       return _error.apply(console, arguments);
     }.bind(this);
+    /* eslint-enable no-console */
   },
 
   watch: {
