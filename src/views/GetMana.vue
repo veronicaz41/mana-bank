@@ -18,11 +18,16 @@
                 <b-button variant="primary" @click="approveWizards">Approve</b-button>
               </card>
             </div>
-            <div class="section" v-if="this.kittiesNeedApproval">
-              <card shadow>
-                <p>Please approve us to manage your CryptoKitties</p>
-                <b-button variant="primary" @click="approveKitties">Approve</b-button>
-              </card>
+            <div class="section" v-if="selectedKitties.length">
+              <div v-for="(kitty, index) in selectedKitties" :key="index">
+                <card shadow class="kitty-approval-card">
+                  <p>
+                    Please approve us to manage
+                    <a :href="kitty.url" target="_blank">{{ kitty.alt }}</a>
+                  </p>
+                  <b-button variant="primary" @click="approveKitty(kitty.id)">Approve</b-button>
+                </card>
+              </div>
             </div>
             <div class="section">
               <p>XMN can be redeemed by 'exiling' CheezeWizards or CryptoKitties.</p>
@@ -76,8 +81,9 @@ export default {
   data() {
     return {
       nfts: [],
+      selectedKitties: [],
+
       wizardsNeedApproval: false,
-      kittiesNeedApproval: false,
       depositedCount: 0,
       wizardApprovalIsLoading: false,
       kittyApprovalIsLoading: false,
@@ -118,10 +124,10 @@ export default {
       this.wizardApprovalIsLoading = true;
     },
 
-    approveKitties() {
-      this.drizzleInstance.contracts.KittyCore.methods.setApprovalForAll.cacheSend(
+    approveKitty(tokenId) {
+      this.drizzleInstance.contracts.KittyCore.methods.approve.cacheSend(
         this.drizzleInstance.contracts.ManaBank.options.address,
-        true,
+        tokenId,
         { from: this.activeAccount }
       );
       this.kittyApprovalIsLoading = true;
@@ -194,8 +200,13 @@ export default {
         if (contractName == "WizardPresale") {
           this.wizardsNeedApproval = false;
           this.wizardApprovalIsLoading = false;
-        } else if (contractName == "KittyCore") {
-          this.kittiesNeedApproval = false;
+        }
+      } else if (eventName == "Approval") {
+        const idx = this.selectedKitties.findIndex(
+          item => item.id == data.tokenId
+        );
+        if (idx >= 0) {
+          this.selectedKitties.splice(idx, 1);
           this.kittyApprovalIsLoading = false;
         }
       } else if (eventName == "GetMana") {
@@ -219,29 +230,35 @@ export default {
 
     async selectedNFTs() {
       this.depositedCount = 0;
+      this.wizardsNeedApproval = false;
+      this.selectedKitties = [];
 
       const manaAddress = this.drizzleInstance.contracts.ManaBank.options
         .address;
 
-      let found = this.selectedNFTs.find(item => item.type == "wizard");
-      if (found) {
-        const isWizardsApproved = await this.drizzleInstance.contracts.WizardPresale.methods
-          .isApprovedForAll(this.activeAccount, manaAddress)
-          .call();
-        this.wizardsNeedApproval = !isWizardsApproved;
-      } else {
-        this.wizardsNeedApproval = false;
-      }
-
-      found = this.selectedNFTs.find(item => item.type == "kitty");
-      if (found) {
-        const isKittiesApproved = await this.drizzleInstance.contracts.KittyCore.methods
-          .isApprovedForAll(this.activeAccount, manaAddress)
-          .call();
-        this.kittiesNeedApproval = !isKittiesApproved;
-      } else {
-        this.kittiesNeedApproval = false;
-      }
+      let seenWizard = false;
+      this.selectedNFTs.forEach(async item => {
+        if (item.type == "wizard" && !seenWizard) {
+          seenWizard = true;
+          const isWizardsApproved = await this.drizzleInstance.contracts.WizardPresale.methods
+            .isApprovedForAll(this.activeAccount, manaAddress)
+            .call();
+          this.wizardsNeedApproval = !isWizardsApproved;
+        } else if (item.type == "kitty") {
+          const approvedAddress = await this.drizzleInstance.contracts.KittyCore.methods
+            .kittyIndexToApproved(item.id)
+            .call();
+          console.log(approvedAddress);
+          if (approvedAddress != manaAddress) {
+            const found = this.selectedKitties.find(
+              kitty => kitty.id == item.id
+            );
+            if (!found) {
+              this.selectedKitties.push(item);
+            }
+          }
+        }
+      });
     }
   }
 };
@@ -279,5 +296,8 @@ export default {
   transform: none;
   color: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.5);
+}
+.get-mana .kitty-approval-card {
+  margin-bottom: 12px;
 }
 </style>
