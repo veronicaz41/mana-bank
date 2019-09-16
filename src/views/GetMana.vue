@@ -221,6 +221,19 @@ export default {
         this.getManaIsLoading = false;
       }
     });
+
+    var _error = console.error;
+    console.error = function() {
+      if (arguments.length > 0) {
+        const e = String(arguments[0]);
+        if (e.includes("Error: Internal JSON-RPC error.")) {
+          this.kittyApprovalIsLoading = false;
+          this.wizardApprovalIsLoading = false;
+          this.getManaIsLoading = false;
+        }
+      }
+      return _error.apply(console, arguments);
+    }.bind(this);
   },
 
   watch: {
@@ -248,7 +261,6 @@ export default {
           const approvedAddress = await this.drizzleInstance.contracts.KittyCore.methods
             .kittyIndexToApproved(item.id)
             .call();
-          console.log(approvedAddress);
           if (approvedAddress != manaAddress) {
             const found = this.selectedKitties.find(
               kitty => kitty.id == item.id
