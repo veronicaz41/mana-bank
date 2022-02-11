@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@drizzle/vue-plugin": "^0.1.0",
-    "@openzeppelin/contracts": "2.3.0",
+    "@openzeppelin/contracts": "4.4.2",
     "apexcharts": "3.8.5",
     "axios": "^0.19.0",
     "bootstrap": "4.3.1",
